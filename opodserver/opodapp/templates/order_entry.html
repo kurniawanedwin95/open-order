@@ -10,45 +10,40 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
-    <style>
-      
-    </style>
+
     <script>
-      function showSnackbar() {
+      function showNotif() {
         // Get the snackbar DIV
-        var x = document.getElementById("snackbar")
+        var x = document.getElementById("notif")
 
         // Add the "show" class to DIV
         x.className = "show";
 
-        // After 3 seconds, remove the show class from DIV
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        // After 5 seconds, remove the show class from DIV
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
       }
     </script>
-    
-    <!--not perfect-->
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static '/styles.css' %}">
 
   </head>
   
   <body>
     {% include "navbar.html" %}
-    <div class="container">
-      <!--<form action="/order_entry/" method="post">-->
-      <form>
-        Nama order: <input id="nama_order" type="text" name="nama_order"><br>
-        Nomor PO: <input id="nomor_po" type="text" name="nomor_po"><br>
-        Item desc.: <input id="item_desc" type="text" name="item_desc"><br>
-        U of M: <input id="u_of_m" type="text" name="u_of_m"><br>
-        Qty: <input id="qty" type="text" name="qty"><br>
-        Keterangan: <input id="keterangan" type="text" name="keterangan"><br>
-        Tanggal pengiriman: <input id="tanggal_pengiriman" type="text" name="tanggal_pengiriman"><br>
+    <div class="container" align="center">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+      <!--<form id="OrderForm">-->
+      <!--  Nama order: <input id="nama_order" type="text" name="nama_order"><br>-->
+      <!--  Nomor PO: <input id="nomor_po" type="text" name="nomor_po"><br>-->
+      <!--  Item desc.: <input id="item_desc" type="text" name="item_desc"><br>-->
+      <!--  U of M: <input id="u_of_m" type="text" name="u_of_m"><br>-->
+      <!--  Qty: <input id="qty" type="text" name="qty"><br>-->
+      <!--  Keterangan: <input id="keterangan" type="text" name="keterangan"><br>-->
+      <!--  Tanggal pengiriman: <input id="tanggal_pengiriman" type="text" name="tanggal_pengiriman"><br>-->
         <!--<input type="submit" value="Masukkan Order">-->
-        <button onclick="showSnackbar()">Masukkan Order</button>
+        <button onclick="showNotif()" type="submit">Masukkan Order</button><!--ngirim k database-->
       </form>
-      <div id="snackbar">Order anda telah dimasukkan!</div>
+      <div id="notif">Order $nomor_po telah dimasukkan!</div>
     </div>
   </body>
 </html>

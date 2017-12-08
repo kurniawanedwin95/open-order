@@ -3,6 +3,16 @@ body {
   padding-top: 70px;
 }
 
+#notif {
+  visibility: hidden;
+  background-color: #222222;
+}
+
+#notif.show {
+  visibility: visible;
+}
+
+
 /*Snackbar styles below*/
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
