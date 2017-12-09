@@ -6,4 +6,11 @@ from django.db import models
 # Create your models here.
 
 class Order(models.Model):
-  name = models.CharField(max_length=100)
+    Nama_Order = models.CharField(max_length = 100)
+    Nomor_PO = models.CharField(max_length = 30)
+    Item_desc = models.CharField(max_length = 100)
+    U_of_m = models.CharField(max_length = 100)
+    Qty = models.CharField(max_length = 100)
+    Keterangan = models.CharField(max_length = 100)
+    Tggl_Pengiriman = models.CharField(max_length = 30)
+  

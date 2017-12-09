@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
 from forms import OrderEntryForm
@@ -22,5 +22,11 @@ class OrderEntryView(TemplateView):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = OrderEntryForm()
+        form = OrderEntryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            Nomor_PO = form.cleaned_data['Nomor_PO']
+            form = OrderEntryForm()
+            return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO})
+
         return render(request, self.template_name, {'form': form})

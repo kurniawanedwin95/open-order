@@ -32,18 +32,9 @@
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-      <!--<form id="OrderForm">-->
-      <!--  Nama order: <input id="nama_order" type="text" name="nama_order"><br>-->
-      <!--  Nomor PO: <input id="nomor_po" type="text" name="nomor_po"><br>-->
-      <!--  Item desc.: <input id="item_desc" type="text" name="item_desc"><br>-->
-      <!--  U of M: <input id="u_of_m" type="text" name="u_of_m"><br>-->
-      <!--  Qty: <input id="qty" type="text" name="qty"><br>-->
-      <!--  Keterangan: <input id="keterangan" type="text" name="keterangan"><br>-->
-      <!--  Tanggal pengiriman: <input id="tanggal_pengiriman" type="text" name="tanggal_pengiriman"><br>-->
-        <!--<input type="submit" value="Masukkan Order">-->
         <button onclick="showNotif()" type="submit">Masukkan Order</button><!--ngirim k database-->
       </form>
-      <div id="notif">Order $nomor_po telah dimasukkan!</div>
+      <div id="notif">Order {{ Nomor_PO }} telah dimasukkan!</div>
     </div>
   </body>
 </html>
