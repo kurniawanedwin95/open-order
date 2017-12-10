@@ -13,14 +13,22 @@
 
     <script>
       function showNotif() {
-        // Get the snackbar DIV
-        var x = document.getElementById("notif")
+        // Get the notif DIV
+        var x = document.getElementById("notif");
 
         // Add the "show" class to DIV
         x.className = "show";
 
         // After 5 seconds, remove the show class from DIV
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+      }
+      
+      // gak jalan
+      function hideNotif() {
+        var x = document.getElementById("notif")
+        setTimeout(() => {
+          x.className = "hide";
+        }, 5000);
       }
     </script>
 
@@ -32,11 +40,14 @@
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button onclick="showNotif()" type="submit">Masukkan Order</button><!--ngirim k database-->
+        <button type="submit">Masukkan Order</button><!--ngirim k database-->
       </form>
-      {% if 'post' == method %}
-        <div id="notif">Order {{ Nomor_PO }} telah dimasukkan!</div>
-      {% endif %}
+      <!--onload nunjukin notif, setelah 5 detik menghilang-->
+      <div onload="hideNotif()" id="notif">
+        {% if method %}
+          Order {{ Nomor_PO }} telah dimasukkan!
+        {% endif %}
+      </div>
     </div>
   </body>
 </html>
