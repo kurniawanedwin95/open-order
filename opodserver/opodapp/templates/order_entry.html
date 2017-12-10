@@ -34,7 +34,9 @@
         {{ form.as_p }}
         <button onclick="showNotif()" type="submit">Masukkan Order</button><!--ngirim k database-->
       </form>
-      <div id="notif">Order {{ Nomor_PO }} telah dimasukkan!</div>
+      {% if 'post' == method %}
+        <div id="notif">Order {{ Nomor_PO }} telah dimasukkan!</div>
+      {% endif %}
     </div>
   </body>
 </html>

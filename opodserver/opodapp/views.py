@@ -29,7 +29,7 @@ class OrderEntryView(TemplateView):
     
     def get(self, request):
         form = OrderEntryForm()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'method':'get'})
 
     def post(self, request):
         form = OrderEntryForm(request.POST)
@@ -38,6 +38,6 @@ class OrderEntryView(TemplateView):
             Nomor_PO = form.cleaned_data['Nomor_PO']
             form = OrderEntryForm()
             print Nomor_PO
-            return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO})
+            return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': 'post'})
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'method': 'post'})
