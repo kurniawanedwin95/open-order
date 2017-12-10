@@ -19,6 +19,6 @@ from opodapp import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.OpenOrderView.as_view(), name='index'),
     url(r'^order_entry/', views.OrderEntryView.as_view(), name='order_entry'),
 ]
