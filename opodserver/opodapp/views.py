@@ -37,6 +37,7 @@ class OrderEntryView(TemplateView):
             form.save()
             Nomor_PO = form.cleaned_data['Nomor_PO']
             form = OrderEntryForm()
+            print Nomor_PO
             return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO})
 
         return render(request, self.template_name, {'form': form})
