@@ -16,20 +16,32 @@
     {% include "navbar.html" %}
     <div class="container">
       <h1 align="center">Open Order ATK90K</h1>
-        <div class="col-md-8">
-          <table>
+      <div class="container col-md-4">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
             <tr>
-              <th>Nama Order: </th>
-              <th>Nomor PO: </th>
+              <th scope="col">Nama Order</th>
+              <th scope="col">Nomor PO</th>
+              <th scope="col">Item Description</th>
+              <th scope="col">U of M</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Keterangan</th>
+              <th scope="col">Tggl Pengiriman</th>
             </tr>
-            {% for item in order %}
-            <tr>
-              <td>{{ item.Nama_Order }}</td>
-              <td>{{ item.Nomor_PO }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </div><br>
+          </thead>
+          {% for item in order %}
+          <tr>
+            <td>{{ item.Nama_Order }}</td>
+            <td>{{ item.Nomor_PO }}</td>
+            <td>{{ item.Item_desc }}</td>
+            <td>{{ item.U_of_m }}</td>
+            <td>{{ item.Qty }}</td>
+            <td>{{ item.Keterangan }}</td>
+            <td>{{ item.Tggl_Pengiriman }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div><br>
       <a href="/admin"><button>admin entrance</button></a><br>
       <h2>Order yang dijalankan</h2><br>
       <h2>Hasil Produksi</h2>
