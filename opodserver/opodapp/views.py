@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.db import connection
 
-from forms import OrderEntryForm
+from forms import OrderEntryForm, OrderModifyForm
 from models import Order
 
 # Create your views here.
@@ -23,6 +23,7 @@ class OpenOrderView(TemplateView):
         print order
         return render(request, self.template_name, {'order': order})
 
+# method False untuk Get request, True untuk Post
 # Class untuk memasukan order di order_entry.html
 class OrderEntryView(TemplateView):
     template_name = "./order_entry.html"
@@ -39,4 +40,12 @@ class OrderEntryView(TemplateView):
             form = OrderEntryForm()
             return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
 
+        return render(request, self.template_name, {'form': form, 'method': False})
+
+# Class untuk mengubah atau menghapus order di order_modify.html
+class OrderModifyView(TemplateView):
+    template_name = "./order_modify.html"
+    
+    def get(self, request):
+        form = OrderModifyForm()
         return render(request, self.template_name, {'form': form, 'method': False})
