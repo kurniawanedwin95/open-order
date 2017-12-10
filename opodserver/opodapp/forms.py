@@ -15,7 +15,7 @@ class OrderEntryForm(forms.ModelForm):
         model = Order
         fields = ('Nama_Order', 'Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
 
-
+# subclass biar bisa display pake Nomor PO
 class MyModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return "%s" % obj.Nomor_PO
