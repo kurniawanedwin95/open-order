@@ -37,13 +37,14 @@
   <body>
     {% include "navbar.html" %}
     <div class="container" align="center">
+      <h1>Ubah/Hapus Order</h1>
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <!--ngeupdate k database-->
-        <button type="submit">Ubah Order</button>
+        <button type="submit" id="modify">Ubah Order</button>
         <!--ngehapus entry di database-->
-        <button type="submit">Hapus Order</button>
+        <button type="submit" id="delete">Hapus Order</button>
       </form>
       <!--onload nunjukin notif, setelah 5 detik menghilang-->
       <div onload="hideNotif()" id="notif">
