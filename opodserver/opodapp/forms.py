@@ -9,11 +9,14 @@ class OrderEntryForm(forms.ModelForm):
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False)
+    Tggl_Pengiriman = forms.DateField(required=False)
     
     class Meta:
         model = Order
         fields = ('Nama_Order', 'Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+        widgets = {
+            'Tggl_Pengiriman': forms.TextInput(attrs={'placeholder': 'dd/mm/yy'}),
+        }
 
 # subclass biar bisa display pake Nomor PO
 class MyModelChoiceField(forms.ModelChoiceField):
@@ -32,13 +35,16 @@ class OrderSelectForm(forms.ModelForm):
         
 class OrderModifyForm(forms.ModelForm):
     Nama_Order = forms.CharField()
-    Nomor_PO = forms.CharField()
+    Nomor_PO = forms.CharField(disabled=True)
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False)
+    Tggl_Pengiriman = forms.DateField(required=False)
     
     class Meta:
         model = Order
         fields = ('Nama_Order', 'Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+        widgets = {
+            'Tggl_Pengiriman': forms.TextInput(attrs={'placeholder': 'dd/mm/yy'}),
+        }

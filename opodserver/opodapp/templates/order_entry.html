@@ -47,6 +47,8 @@
       <div onload="hideNotif()" id="notif">
         {% if method %}
           Order {{ Nomor_PO }} telah dimasukkan!
+        {% else %}
+          Order gagal dimasukkan
         {% endif %}
       </div>
     </div>

@@ -23,11 +23,12 @@ class OpenOrderView(TemplateView):
         order = list(Order.objects.all())
         return render(request, self.template_name, {'order': order})
 
-# method False untuk Get request, True untuk Post
+# method False untuk Get request, gagal masuk ke db; True untuk Post
 # Class untuk memasukan order di order_entry.html
 class OrderEntryView(TemplateView):
     template_name = "./order_entry.html"
     
+    # untuk initial page load
     def get(self, request):
         form = OrderEntryForm()
         return render(request, self.template_name, {'form': form, 'method': False})
@@ -35,10 +36,16 @@ class OrderEntryView(TemplateView):
     def post(self, request):
         form = OrderEntryForm(request.POST)
         if form.is_valid():
-            form.save()
             Nomor_PO = form.cleaned_data['Nomor_PO']
-            form = OrderEntryForm()
-            return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
+            # check Nomor_PO sudah terpakai belom
+            if Order.objects.filter(Nomor_PO=Nomor_PO).exists():
+                form = OrderEntryForm()
+                return render(request, self.template_name, {'form': form, 'method': False})
+            # Order berhasil masuk
+            else:
+                form.save()
+                form = OrderEntryForm()
+                return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
 
         return render(request, self.template_name, {'form': form, 'method': False})
 
@@ -47,28 +54,44 @@ class OrderModifyView(TemplateView):
     template_name = "./order_modify.html"
     
     def get(self, request):
+        # pass variable ke /modify
         if request.GET.get("Nomor_PO"):
             Nomor_PO = request.GET.get("Nomor_PO")
             return redirect('/modify/?Nomor_PO=%s' % Nomor_PO)
+        # untuk initial page load
         else:
             form = OrderSelectForm()
             return render(request, self.template_name, {'form': form, 'method': False})
+        
+    def post(self, request):
+        form = OrderSelectForm(request.POST)
+        # untuk menghapus entry
+        if form.is_valid():
+            Nomor_PO = request.POST.get("Nomor_PO")
+            order = Order.objects.get(Nomor_PO=Nomor_PO)
+            order.delete()
+            form = OrderSelectForm()
+            return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
+        # default condition
+        else:
+            return render(request, self.template_name, {'form': form, 'method': True})
         
 # Class untuk melakukan perubahan ke order
 class ModificationView(TemplateView):
     template_name = "./modify.html"
     
+    # terima variable dari order_modify
     def get(self, request):
         Nomor_PO = request.GET.get("Nomor_PO")
         try:
             order = Order.objects.get(Nomor_PO=Nomor_PO)
             form = OrderEntryForm(initial={'Nama_Order': order.Nama_Order, 'Nomor_PO': order.Nomor_PO, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
-            print order.id
         except ObjectDoesNotExist:
             print("Order tidak ditemukan")
             form = OrderEntryForm()
         return render(request, self.template_name, {'form': form, 'method': False})
 
+    # untuk commit order modification
     def post(self, request):
         form = OrderModifyForm(request.POST)
         if form.is_valid():

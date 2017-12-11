@@ -37,19 +37,24 @@
   <body>
     {% include "navbar.html" %}
     <div class="container" align="center">
-      <h1>Ubah/Hapus Order</h1>
-      <form>
+      <h1>Pilih Order Untuk Diubah</h1>
+      <form name="modify" method="get">
         {{ form.as_p }}
         <!--ngeupdate k database-->
-        <button class="btn btn-success" type="submit">Ubah Order</button>
-        <!--ngehapus entry di database-->
-        <!--<button type="submit" id="delete">Hapus Order</button>-->
+        <button class="btn btn-success" type="submit">Pilih Order</button>
       </form>
-      <button class="btn btn-danger" name="delete">Hapus Order</button><br>
+      <br>
+      <h1>Pilih Order Untuk Dihapus</h1>
+      <form name="delete" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!--ngehapus entry di database-->
+        <button class="btn btn-danger" type="submit">Hapus Order</button><br>
+      </form>
       <!--onload nunjukin notif, setelah 5 detik menghilang-->
       <div onload="hideNotif()" id="notif">
         {% if method %}
-          Order {{ Nomor_PO }} telah dimasukkan!
+          Order {{ Nomor_PO }} telah dihapuskan!
         {% endif %}
       </div>
     </div>
