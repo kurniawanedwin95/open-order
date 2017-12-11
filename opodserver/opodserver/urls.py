@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^$', views.OpenOrderView.as_view(), name='index'),
     url(r'^order_entry/', views.OrderEntryView.as_view(), name='order_entry'),
     url(r'^order_modify/',views.OrderModifyView.as_view(), name='order_modify'),
+    url(r'^modify/',views.ModificationView.as_view(), name='modify'),
 ]
