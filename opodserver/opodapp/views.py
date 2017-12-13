@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.db import connection
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django import forms
 
 from forms import OrderEntryForm, OrderSelectForm, OrderModifyForm
 from models import Order
@@ -85,19 +86,20 @@ class ModificationView(TemplateView):
         Nomor_PO = request.GET.get("Nomor_PO")
         try:
             order = Order.objects.get(Nomor_PO=Nomor_PO)
-            form = OrderEntryForm(initial={'Nama_Order': order.Nama_Order, 'Nomor_PO': order.Nomor_PO, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
+            form = OrderEntryForm(initial={'Nomor_PO': order.Nomor_PO, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
+            form.fields['Nomor_PO'].widget = forms.HiddenInput()
         except ObjectDoesNotExist:
             print("Order tidak ditemukan")
             form = OrderEntryForm()
-        return render(request, self.template_name, {'form': form, 'method': False})
+        return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': False})
 
     # untuk commit order modification
     def post(self, request):
-        form = OrderModifyForm(request.POST)
+        form = OrderEntryForm(request.POST)
+        print form
         if form.is_valid():
             Nomor_PO = form.cleaned_data['Nomor_PO']
             former = Order.objects.get(Nomor_PO=Nomor_PO)
-            former.Nama_Order = form.cleaned_data['Nama_Order']
             former.Nomor_PO = Nomor_PO
             former.Item_desc = form.cleaned_data['Item_desc']
             former.U_of_m = form.cleaned_data['U_of_m']

@@ -20,7 +20,6 @@
         <table class="table table-bordered table-striped">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">Nama Order</th>
               <th scope="col">Nomor PO</th>
               <th scope="col">Item Description</th>
               <th scope="col">U of M</th>
@@ -31,7 +30,6 @@
           </thead>
           {% for item in order %}
           <tr>
-            <td>{{ item.Nama_Order }}</td>
             <td>{{ item.Nomor_PO }}</td>
             <td>{{ item.Item_desc }}</td>
             <td>{{ item.U_of_m }}</td>

@@ -37,8 +37,8 @@
   <body>
     {% include "navbar.html" %}
     <div class="container" align="center">
-      <h1>Ubah Detil Order</h1>
-      <form method="post">
+      <h1>Ubah Detil Order {{ Nomor_PO }}</h1>
+      <form method="post" name="modify">
         {% csrf_token %}
         {{ form.as_p }}
         <!--ngeupdate k database-->
@@ -50,7 +50,6 @@
       <!--  {% if method %}-->
       <!--    Order {{ Nomor_PO }} telah dimasukkan!-->
       <!--  {% endif %}-->
-      </div>
     </div>
   </body>
 </html>

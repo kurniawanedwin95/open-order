@@ -6,7 +6,6 @@ from django.db import models
 # Create your models here.
 
 class Order(models.Model):
-    Nama_Order = models.CharField(max_length = 100)
     Nomor_PO = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
@@ -15,7 +14,6 @@ class Order(models.Model):
     Tggl_Pengiriman = models.DateField()
 
 class CmpltOrder(models.Model):
-    Nama_Order = models.CharField(max_length = 100)
     Nomor_PO = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)

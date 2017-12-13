@@ -3,7 +3,6 @@ from django import forms
 from models import Order
 
 class OrderEntryForm(forms.ModelForm):
-    Nama_Order = forms.CharField()
     Nomor_PO = forms.CharField()
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
@@ -13,10 +12,10 @@ class OrderEntryForm(forms.ModelForm):
     
     class Meta:
         model = Order
-        fields = ('Nama_Order', 'Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
-        widgets = {
-            'Tggl_Pengiriman': forms.TextInput(attrs={'placeholder': 'dd/mm/yy'}),
-        }
+        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+        # widgets = {
+        #     'Tggl_Pengiriman': forms.TextInput(attrs={'placeholder': 'dd/mm/yy'}),
+        # }
 
 # subclass biar bisa display pake Nomor PO
 class MyModelChoiceField(forms.ModelChoiceField):
@@ -33,9 +32,9 @@ class OrderSelectForm(forms.ModelForm):
         model = Order
         fields = ('Nomor_PO',)
         
+# ---------------------------------------unused----------------------------------------
 class OrderModifyForm(forms.ModelForm):
-    Nama_Order = forms.CharField()
-    Nomor_PO = forms.CharField(disabled=True)
+    Nomor_PO = forms.CharField()
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
@@ -44,7 +43,7 @@ class OrderModifyForm(forms.ModelForm):
     
     class Meta:
         model = Order
-        fields = ('Nama_Order', 'Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
         widgets = {
-            'Tggl_Pengiriman': forms.TextInput(attrs={'placeholder': 'dd/mm/yy'}),
+            'Tggl_Pengiriman': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
