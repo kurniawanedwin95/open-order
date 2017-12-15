@@ -15,7 +15,7 @@
   <body>
     {% include "navbar.html" %}
     <h1 align="center">Open Order ATK90K Trial ver.</h1>
-    <div class="container col-sm-6 col-md-5 toscroll">
+    <div class="container col-sm-6 col-md-5 toscroll_order">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
@@ -39,7 +39,7 @@
         {% endfor %}
       </table>
     </div>
-    <div class="container col-sm-6 col-md-7">
+    <div class="container col-sm-6 col-md-7 toscroll_production">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
@@ -75,6 +75,7 @@
       <a href="/admin"><button>admin entrance</button></a><br>
       <a href="/order_entry"><button>order entry</button></a><br>
       <a href="/order_modify"><button>order modify</button></a><br>
+      <a href="/machine_select"><button>machine select</button></a><br>
       <h2>Order yang dijalankan</h2><br>
       <h2>Hasil Produksi</h2>
     </div>

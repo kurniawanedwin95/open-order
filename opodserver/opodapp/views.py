@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django import forms
 
-from forms import OrderEntryForm, OrderSelectForm, OrderModifyForm
+from forms import OrderEntryForm, OrderSelectForm, OrderModifyForm, MachineSelectForm
 from models import Order
 
 # Create your views here.
@@ -16,6 +16,7 @@ from models import Order
 def index(request):
     return render(request, "index.html")
 
+#---------------------------------OPEN-ORDER INDEX------------------------------------
 # Class untuk menampilkan order yang ada, order yang di proses, dan output produksi di /
 class OpenOrderView(TemplateView):
     template_name = "./index.html"
@@ -24,6 +25,7 @@ class OpenOrderView(TemplateView):
         order = list(Order.objects.all())
         return render(request, self.template_name, {'order': order})
 
+#--------------------------------ORDER ENTRY&MODIFICATION-------------------------------
 # method False untuk Get request, gagal masuk ke db; True untuk Post
 # Class untuk memasukan order di order_entry.html
 class OrderEntryView(TemplateView):
@@ -111,4 +113,21 @@ class ModificationView(TemplateView):
         else:
             print('Update failed')
         return redirect('/')
+
+#-----------------------------PRODUCTION ENTRY&MODIFICATION------------------------------
+class MachineSelectView(TemplateView):
+    template_name = "./machine_select.html"
     
+    def get(self, request):
+        if request.GET.get("Machine_ID"):
+            Machine_ID = request.GET.get("Machine_ID")
+            return redirect('/production_entry/$Machine_ID=%s' % Machine_ID)
+        else:
+            form = MachineSelectForm()
+            return render(request, self.template_name, {'form': form, })
+            
+class ProductionEntryView(TemplateView):
+    template_name = "./production_entry.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)

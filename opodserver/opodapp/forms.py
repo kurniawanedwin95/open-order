@@ -31,7 +31,17 @@ class OrderSelectForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ('Nomor_PO',)
-        
+    
+
+class MachineSelectForm(forms.Form):
+    choices = [
+        ('CoEx_2', 'CoEx 2'),
+        ('CoEx_3', 'CoEx 3'),
+        ('CoEx_4', 'CoEx 4'),
+        ('CoEx_5', 'CoEx 5'),
+        ('CoEx_6', 'CoEx 6'),
+    ]
+    Machine_ID = forms.ChoiceField(choices=choices)
 # ---------------------------------------unused----------------------------------------
 class OrderModifyForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
