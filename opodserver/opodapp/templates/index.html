@@ -14,39 +14,69 @@
   </head>
   <body>
     {% include "navbar.html" %}
-    <div class="container">
-      <h1 align="center">Open Order ATK90K Trial ver.</h1>
-      <div class="container col-md-4">
-        <table class="table table-bordered table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Nomor PO</th>
-              <th scope="col">Item Description</th>
-              <th scope="col">U of M</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Keterangan</th>
-              <th scope="col">Tggl Pengiriman</th>
-            </tr>
-          </thead>
-          {% for item in order %}
+    <h1 align="center">Open Order ATK90K Trial ver.</h1>
+    <div class="container col-sm-6 col-md-5 toscroll">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
           <tr>
-            <td>{{ item.Nomor_PO }}</td>
-            <td>{{ item.Item_desc }}</td>
-            <td>{{ item.U_of_m }}</td>
-            <td>{{ item.Qty }}</td>
-            <td>{{ item.Keterangan }}</td>
-            <td>{{ item.Tggl_Pengiriman }}</td>
+            <th scope="col">Nomor PO</th>
+            <th scope="col">Item Description</th>
+            <th scope="col">U of M</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Tggl Pengiriman</th>
           </tr>
-          {% endfor %}
-        </table>
-      </div><br>
-      <div class="container col-md-12">
-        <a href="/admin"><button>admin entrance</button></a><br>
-        <a href="/order_entry"><button>order entry</button></a><br>
-        <a href="/order_modify"><button>order modify</button></a><br>
-        <h2>Order yang dijalankan</h2><br>
-        <h2>Hasil Produksi</h2>
-      </div>
+        </thead>
+        {% for item in order %}
+        <tr>
+          <td>{{ item.Nomor_PO }}</td>
+          <td>{{ item.Item_desc }}</td>
+          <td>{{ item.U_of_m }}</td>
+          <td>{{ item.Qty }}</td>
+          <td>{{ item.Keterangan }}</td>
+          <td>{{ item.Tggl_Pengiriman }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="container col-sm-6 col-md-7">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nomor PO</th>
+            <th scope="col">Item Description</th>
+            <th scope="col">U of M</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Tggl Pengiriman</th>
+            <th scope="col">Diproduksi oleh</th>
+          </tr>
+        </thead>
+        <!--{% for item in order %}-->
+        <!--<tr>-->
+        <!--  <td>{{ item.Nomor_PO }}</td>-->
+        <!--  <td>{{ item.Item_desc }}</td>-->
+        <!--  <td>{{ item.U_of_m }}</td>-->
+        <!--  <td>{{ item.Qty }}</td>-->
+        <!--  <td>{{ item.Keterangan }}</td>-->
+        <!--  <td>{{ item.Tggl_Pengiriman }}</td>-->
+        <!--</tr>-->
+        <!--{% endfor %}-->
+      </table>
+    </div><br>
+    <div class="container col-md-5">
+    </div>
+    <div class="container col-md-7">
+      <h2>
+        Hasil Produksi $_Mesin: $_Keterangan(keterangan dri beda order mslh ni) $_Qty
+      </h2>
+    </div>
+    <div class="container col-md-12">
+      <a href="/admin"><button>admin entrance</button></a><br>
+      <a href="/order_entry"><button>order entry</button></a><br>
+      <a href="/order_modify"><button>order modify</button></a><br>
+      <h2>Order yang dijalankan</h2><br>
+      <h2>Hasil Produksi</h2>
     </div>
   </body>
 </html>
