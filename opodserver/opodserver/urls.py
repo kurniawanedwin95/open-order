@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^order_entry/', views.OrderEntryView.as_view(), name='order_entry'),
     url(r'^order_modify/', views.OrderModifyView.as_view(), name='order_modify'),
     url(r'^modify/', views.ModificationView.as_view(), name='modify'),
-    url(r'^machine_select/', views.MachineSelectView.as_view(), name="machine_select"),
-    url(r'^production_entry/', views.ProductionEntryView.as_view(), name="production_entry"),
+    url(r'^machine_select/', views.MachineSelectView.as_view(), name='machine_select'),
+    url(r'^production_entry/', views.ProductionEntryView.as_view(), name='production_entry'),
+    url(r'^sales_portal/', views.SalesPortalView.as_view(), name='sales_portal'),
+    url(r'^ppic_portal/', views.PPICPortalView.as_view(), name='ppic_portal'),
 ]

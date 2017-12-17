@@ -8,8 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django import forms
 
-from forms import OrderEntryForm, OrderSelectForm, OrderModifyForm, MachineSelectForm
-from models import Order
+from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm
+from models import Order, Production
+
+from datetime import datetime
 
 # Create your views here.
 
@@ -23,7 +25,20 @@ class OpenOrderView(TemplateView):
     
     def get(self, request):
         order = list(Order.objects.all())
-        return render(request, self.template_name, {'order': order})
+        production = list(Production.objects.all())
+        return render(request, self.template_name, {'order': order, 'production': production})
+
+class SalesPortalView(TemplateView):
+    template_name = "./sales_portal.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
+
+class PPICPortalView(TemplateView):
+    template_name = "./ppic_portal.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
 
 #--------------------------------ORDER ENTRY&MODIFICATION-------------------------------
 # method False untuk Get request, gagal masuk ke db; True untuk Post
@@ -121,7 +136,7 @@ class MachineSelectView(TemplateView):
     def get(self, request):
         if request.GET.get("Machine_ID"):
             Machine_ID = request.GET.get("Machine_ID")
-            return redirect('/production_entry/$Machine_ID=%s' % Machine_ID)
+            return redirect('/production_entry/?Machine_ID=%s' % Machine_ID)
         else:
             form = MachineSelectForm()
             return render(request, self.template_name, {'form': form, })
@@ -130,4 +145,34 @@ class ProductionEntryView(TemplateView):
     template_name = "./production_entry.html"
     
     def get(self, request):
-        return render(request, self.template_name)
+        order = Order.objects.all()
+        Machine_ID = request.GET.get("Machine_ID")
+        # form = OrderProductionForm()
+        print Machine_ID
+        return render(request, self.template_name, {'order': order, 'Machine_ID': Machine_ID, 'method': False,})
+    
+    def post(self, request):
+        Nomor_PO_list = request.POST.getlist("Nomor_PO")
+        Machine_ID = request.POST.get("Machine_ID")
+        for Nomor_PO in Nomor_PO_list:
+            # ngebuang character terakhir("/") di string Nomor_PO
+            # Nomor_PO = Nomor_PO[:-1]
+            # print Nomor_PO
+            order = Order.objects.get(Nomor_PO=Nomor_PO)
+            data = {
+                'Nomor_PO': Nomor_PO,
+                'Item_desc': order.Item_desc,
+                'U_of_m': order.U_of_m,
+                'Qty': order.Qty,
+                'Keterangan': order.Keterangan,
+                'Tggl_Pengiriman': order.Tggl_Pengiriman,
+                'Mesin': Machine_ID,
+                'Tggl_Mulai_Produksi': str(datetime.now()), #gk mw masuk2
+            }
+            print datetime.now()
+            form = OrderProductionForm(data)
+            print form
+            form.save()
+            order.delete()
+        # return render(request, self.template_name)
+        return redirect('/machine_select/')

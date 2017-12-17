@@ -38,9 +38,36 @@
     {% include "navbar.html" %}
     <div class="container" align="center">
       <h1>Masukkan Detil Produksi Mesin {{ Machine_ID }}</h1>
-      <form method="post" name="modify">
+      <form method="post" name="production">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="container toscroll_order">
+          <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Nomor PO</th>
+                <th scope="col">Item Description</th>
+                <th scope="col">U of M</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">Tggl Pengiriman</th>
+                <th scope="col">Masuk Produksi</th>
+              </tr>
+            </thead>
+            {% for item in order %}
+            <tr>
+              <td>{{ item.Nomor_PO }}</td>
+              <td>{{ item.Item_desc }}</td>
+              <td>{{ item.U_of_m }}</td>
+              <td>{{ item.Qty }}</td>
+              <td>{{ item.Keterangan }}</td>
+              <td>{{ item.Tggl_Pengiriman }}</td>
+              <td><input type="checkbox" name="Nomor_PO" value="{{ item.Nomor_PO }}"/></td>
+            </tr>
+            {% endfor %}
+            <input name="Machine_ID" value={{ Machine_ID }} type="hidden"/>
+          </table>
+        </div>
+        
         <!--ngeupdate k database-->
         <button class="btn btn-success" type="submit">Ubah Order</button>
       </form>
