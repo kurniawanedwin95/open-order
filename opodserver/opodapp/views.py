@@ -167,12 +167,14 @@ class ProductionEntryView(TemplateView):
                 'Keterangan': order.Keterangan,
                 'Tggl_Pengiriman': order.Tggl_Pengiriman,
                 'Mesin': Machine_ID,
-                'Tggl_Mulai_Produksi': str(datetime.now()), #gk mw masuk2
+                'Tggl_Mulai_Produksi': unicode(datetime.now()),
             }
-            print datetime.now()
             form = OrderProductionForm(data)
-            print form
-            form.save()
-            order.delete()
-        # return render(request, self.template_name)
+            if form.is_valid():
+                form.save()
+                order.delete()
+                print "%s being workd on %s" % Nomor_PO, Machine_ID
+            else:
+                print "Form is not valid, something is wrong"
+                return redirect('/')
         return redirect('/machine_select/')

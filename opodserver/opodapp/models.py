@@ -15,7 +15,7 @@ class Order(models.Model):
     
 class Production(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Item_Desc = models.CharField(max_length = 100)
+    Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
     Qty = models.CharField(max_length = 100)
     Keterangan = models.CharField(max_length = 100)

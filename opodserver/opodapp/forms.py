@@ -59,11 +59,11 @@ class OrderProductionForm(forms.ModelForm):
     Keterangan = forms.CharField()
     Tggl_Pengiriman = forms.CharField(required=False, initial="24 December 2017")
     Mesin = forms.CharField()
-    Tggl_Masuk_Produksi = forms.CharField(required=False, initial="24-12-2017 00:00:00")
+    Tggl_Mulai_Produksi = forms.CharField(required=False, initial="24-12-2017 00:00:00")
     
     class Meta:
         model = Production
-        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Masuk_Produksi')
+        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi')
         widgets = {
             'Tggl_Pengiriman': DateInput(),
         }
