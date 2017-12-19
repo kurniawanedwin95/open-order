@@ -1,6 +1,6 @@
 from django import forms
 
-from models import Order, Production
+from models import Order, Production, CmpltOrder
 
 from datetime import datetime
 
@@ -13,7 +13,7 @@ class OrderEntryForm(forms.ModelForm):
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial="24 December 2017")
+    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now()))
     
     class Meta:
         model = Order
@@ -57,9 +57,9 @@ class OrderProductionForm(forms.ModelForm):
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial="24 December 2017")
+    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now()))
     Mesin = forms.CharField()
-    Tggl_Mulai_Produksi = forms.CharField(required=False, initial="24-12-2017 00:00:00")
+    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
     
     class Meta:
         model = Production
@@ -68,3 +68,29 @@ class OrderProductionForm(forms.ModelForm):
             'Tggl_Pengiriman': DateInput(),
         }
 
+class ProductionFinishForm(forms.Form):
+    choices = [
+        ('CoEx_2', 'CoEx 2'),
+        ('CoEx_3', 'CoEx 3'),
+        ('CoEx_4', 'CoEx 4'),
+        ('CoEx_5', 'CoEx 5'),
+        ('CoEx_6', 'CoEx 6'),
+    ]
+    Machine_ID = forms.ChoiceField(choices=choices)
+    Output = forms.CharField(required=True)
+    
+class OrderCompleteForm(forms.ModelForm):
+    Nomor_PO = forms.CharField()
+    Item_desc = forms.CharField()
+    U_of_m = forms.CharField()
+    Qty = forms.CharField()
+    Keterangan = forms.CharField()
+    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Mesin = forms.CharField()
+    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Tggl_Selesai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Output = forms.CharField()
+    
+    class Meta:
+        model = CmpltOrder
+        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Output')

@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^production_entry/', views.ProductionEntryView.as_view(), name='production_entry'),
     url(r'^sales_portal/', views.SalesPortalView.as_view(), name='sales_portal'),
     url(r'^ppic_portal/', views.PPICPortalView.as_view(), name='ppic_portal'),
+    url(r'^production_finish/', views.ProductionFinishView.as_view(), name='production_finish'),
 ]

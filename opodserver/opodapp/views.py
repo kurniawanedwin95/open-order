@@ -8,8 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django import forms
 
-from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm
-from models import Order, Production
+from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm
+from models import Order, Production, CmpltOrder
 
 from datetime import datetime
 
@@ -147,7 +147,6 @@ class ProductionEntryView(TemplateView):
     def get(self, request):
         order = Order.objects.all()
         Machine_ID = request.GET.get("Machine_ID")
-        # form = OrderProductionForm()
         print Machine_ID
         return render(request, self.template_name, {'order': order, 'Machine_ID': Machine_ID, 'method': False,})
     
@@ -157,7 +156,6 @@ class ProductionEntryView(TemplateView):
         for Nomor_PO in Nomor_PO_list:
             # ngebuang character terakhir("/") di string Nomor_PO
             # Nomor_PO = Nomor_PO[:-1]
-            # print Nomor_PO
             order = Order.objects.get(Nomor_PO=Nomor_PO)
             data = {
                 'Nomor_PO': Nomor_PO,
@@ -173,8 +171,47 @@ class ProductionEntryView(TemplateView):
             if form.is_valid():
                 form.save()
                 order.delete()
-                print "%s being workd on %s" % Nomor_PO, Machine_ID
+                print "%(x)s being worked on %(y)s" % {'x': Nomor_PO, 'y': Machine_ID}
             else:
                 print "Form is not valid, something is wrong"
                 return redirect('/')
         return redirect('/machine_select/')
+
+class ProductionFinishView(TemplateView):
+    template_name = "./production_finish.html"
+    
+    def get(self, request):
+        form = ProductionFinishForm()
+        return render(request, self.template_name, {'form': form, })
+    
+    def post(self, request):
+        form = ProductionFinishForm(request.POST)
+        if form.is_valid():
+            Machine_ID = form.cleaned_data['Machine_ID']
+            if Production.objects.filter(Mesin=Machine_ID):
+                production = Production.objects.filter(Mesin=Machine_ID)
+                print production
+                for item in production:
+                    data = {
+                        'Nomor_PO': item.Nomor_PO,
+                        'Item_desc': item.Item_desc,
+                        'U_of_m': item.U_of_m,
+                        'Qty': item.Qty,
+                        'Keterangan': item.Keterangan,
+                        'Tggl_Pengiriman': item.Tggl_Pengiriman,
+                        'Mesin': item.Mesin,
+                        'Tggl_Mulai_Produksi': item.Tggl_Mulai_Produksi,
+                        'Tggl_Selesai_Produksi': unicode(datetime.now()),
+                        'Output': form.cleaned_data['Output']
+                    }
+                    complete = OrderCompleteForm(data)
+                    complete.save()
+                    item.delete()
+                print "%s finished production" % Machine_ID
+            else:
+                print "Machine not in production"
+            form = ProductionFinishForm()
+            return render(request, self.template_name, {'form': form})
+        else:
+            print "Form is invalid"
+            return render(request, self.template_name)
