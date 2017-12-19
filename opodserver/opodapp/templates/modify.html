@@ -37,7 +37,7 @@
   <body>
     {% include "navbar.html" %}
     <div class="container" align="center">
-      <h1>Ubah Detil Order {{ Nomor_PO }}</h1>
+      <h3><b>Ubah Detil Order {{ Nomor_PO }}</b></h3>
       <form method="post" name="modify">
         {% csrf_token %}
         {{ form.as_p }}

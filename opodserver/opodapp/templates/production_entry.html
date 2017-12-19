@@ -37,10 +37,10 @@
   <body>
     {% include "navbar.html" %}
     <div class="container" align="center">
-      <h1>Masukkan Detil Produksi Mesin {{ Machine_ID }}</h1>
+      <h3><b>Masukkan Detil Produksi Mesin {{ Machine_ID }}</b></h3>
       <form method="post" name="production">
         {% csrf_token %}
-        <div class="container toscroll_order">
+        <div class="container col-md-12 toscroll_order">
           <table class="table table-bordered table-striped">
             <thead class="thead-dark">
               <tr>
@@ -64,10 +64,9 @@
               <td><input type="checkbox" name="Nomor_PO" value="{{ item.Nomor_PO }}"/></td>
             </tr>
             {% endfor %}
-            <input name="Machine_ID" value={{ Machine_ID }} type="hidden"/>
           </table>
+          <input name="Machine_ID" value={{ Machine_ID }} type="hidden"/>
         </div>
-        
         <!--ngeupdate k database-->
         <button class="btn btn-success" type="submit">Ubah Order</button>
       </form>

@@ -26,7 +26,20 @@ class OpenOrderView(TemplateView):
     def get(self, request):
         order = list(Order.objects.all())
         production = list(Production.objects.all())
-        return render(request, self.template_name, {'order': order, 'production': production})
+        # sudah ada produksi yang selesai
+        if CmpltOrder.objects.first():
+            complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
+        # initial state, belom ada produksi yang selesai sama sekali
+        else:
+            data = {
+                'Mesin': "None yet",
+                'Tggl_Selesai_Produksi': 0,
+                'Batch_Output_Berat': 0,
+                'Batch_Output_Panjang': 0,
+                'Batch_Output_Roll': 0,
+                }
+            complete = CmpltOrder(data)
+        return render(request, self.template_name, {'order': order, 'production': production, 'complete': complete})
 
 class SalesPortalView(TemplateView):
     template_name = "./sales_portal.html"
@@ -190,7 +203,6 @@ class ProductionFinishView(TemplateView):
             Machine_ID = form.cleaned_data['Machine_ID']
             if Production.objects.filter(Mesin=Machine_ID):
                 production = Production.objects.filter(Mesin=Machine_ID)
-                print production
                 for item in production:
                     data = {
                         'Nomor_PO': item.Nomor_PO,
@@ -202,7 +214,9 @@ class ProductionFinishView(TemplateView):
                         'Mesin': item.Mesin,
                         'Tggl_Mulai_Produksi': item.Tggl_Mulai_Produksi,
                         'Tggl_Selesai_Produksi': unicode(datetime.now()),
-                        'Output': form.cleaned_data['Output']
+                        'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Ton'],
+                        'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
+                        'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
                     }
                     complete = OrderCompleteForm(data)
                     complete.save()

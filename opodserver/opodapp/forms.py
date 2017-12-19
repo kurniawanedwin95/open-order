@@ -8,7 +8,7 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class OrderEntryForm(forms.ModelForm):
-    Nomor_PO = forms.CharField()
+    Nomor_PO = forms.CharField(required=True)
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
@@ -77,8 +77,10 @@ class ProductionFinishForm(forms.Form):
         ('CoEx_6', 'CoEx 6'),
     ]
     Machine_ID = forms.ChoiceField(choices=choices)
-    Output = forms.CharField(required=True)
-    
+    Batch_Output_Dalam_Ton = forms.CharField(required=True)
+    Batch_Output_Dalam_Meter = forms.CharField(required=True)
+    Batch_Output_Dalam_Roll = forms.CharField(required=True)
+        
 class OrderCompleteForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
     Item_desc = forms.CharField()
@@ -89,8 +91,10 @@ class OrderCompleteForm(forms.ModelForm):
     Mesin = forms.CharField()
     Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
     Tggl_Selesai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
-    Output = forms.CharField()
+    Batch_Output_Berat = forms.CharField()
+    Batch_Output_Panjang = forms.CharField()
+    Batch_Output_Roll = forms.CharField()
     
     class Meta:
         model = CmpltOrder
-        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Output')
+        fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')

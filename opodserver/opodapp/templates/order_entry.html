@@ -37,7 +37,7 @@
   <body>
     {% include "navbar.html" %}
     <div class="container" align="center">
-      <h1>Masukkan Order Baru</h1>
+      <h3><b>Masukkan Order Baru</b></h3>
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

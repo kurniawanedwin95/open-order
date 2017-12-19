@@ -33,5 +33,6 @@ class CmpltOrder(models.Model):
     Mesin = models.CharField(max_length = 10)
     Tggl_Mulai_Produksi = models.CharField(max_length = 100)
     Tggl_Selesai_Produksi = models.CharField(max_length = 100)
-    Output = models.CharField(max_length = 100)
-  
+    Batch_Output_Berat = models.CharField(max_length = 100)
+    Batch_Output_Panjang = models.CharField(max_length = 100)
+    Batch_Output_Roll = models.CharField(max_length = 100)
