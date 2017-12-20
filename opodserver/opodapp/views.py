@@ -44,15 +44,15 @@ class OpenOrderView(TemplateView):
 
 class SalesPortalView(TemplateView):
     template_name = "./sales_portal.html"
-    
     def get(self, request):
-        return render(request, self.template_name)
+        order = list(Order.objects.all())
+        return render(request, self.template_name, {'order': order, })
 
 class PPICPortalView(TemplateView):
     template_name = "./ppic_portal.html"
-    
     def get(self, request):
-        return render(request, self.template_name)
+        production = list(Production.objects.all())
+        return render(request, self.template_name, {'production': production, })
 
 #--------------------------------ORDER ENTRY&MODIFICATION-------------------------------
 # method False untuk Get request, gagal masuk ke db; True untuk Post

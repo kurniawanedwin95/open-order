@@ -41,14 +41,13 @@
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Masukkan Order</button><!--ngirim k database-->
+        <button type="submit" class="btn btn-success">Masukkan Order</button><!--ngirim k database-->
       </form>
+      <a href="/sales_portal" class="btn btn-primary">Kembali ke Portal</a>
       <!--onload nunjukin notif, setelah 5 detik menghilang-->
       <div onload="hideNotif()" id="notif">
         {% if method %}
           Order {{ Nomor_PO }} telah dimasukkan!
-        {% else %}
-          Order gagal dimasukkan
         {% endif %}
       </div>
     </div>
