@@ -141,7 +141,7 @@ class ModificationView(TemplateView):
             print('Entry %s updated' % Nomor_PO)
         else:
             print('Update failed')
-        return redirect('/')
+        return redirect('/sales_portal')
 
 #-----------------------------PRODUCTION ENTRY&MODIFICATION------------------------------
 class MachineSelectView(TemplateView):
