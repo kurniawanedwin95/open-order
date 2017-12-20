@@ -76,7 +76,10 @@ class ProductionFinishForm(forms.Form):
         ('CoEx_5', 'CoEx 5'),
         ('CoEx_6', 'CoEx 6'),
     ]
+    
+    production = Production.objects.all()
     Machine_ID = forms.ChoiceField(choices=choices)
+    Nomor_PO = MyModelChoiceField(queryset=production, to_field_name="Nomor_PO")
     Batch_Output_Dalam_Ton = forms.CharField(required=True)
     Batch_Output_Dalam_Meter = forms.CharField(required=True)
     Batch_Output_Dalam_Roll = forms.CharField(required=True)

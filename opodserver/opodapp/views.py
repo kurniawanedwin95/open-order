@@ -32,6 +32,7 @@ class OpenOrderView(TemplateView):
         # initial state, belom ada produksi yang selesai sama sekali
         else:
             data = {
+                'Nomor_PO': "None",
                 'Mesin': "None yet",
                 'Tggl_Selesai_Produksi': 0,
                 'Batch_Output_Berat': 0,
@@ -201,26 +202,27 @@ class ProductionFinishView(TemplateView):
         form = ProductionFinishForm(request.POST)
         if form.is_valid():
             Machine_ID = form.cleaned_data['Machine_ID']
-            if Production.objects.filter(Mesin=Machine_ID):
-                production = Production.objects.filter(Mesin=Machine_ID)
-                for item in production:
-                    data = {
-                        'Nomor_PO': item.Nomor_PO,
-                        'Item_desc': item.Item_desc,
-                        'U_of_m': item.U_of_m,
-                        'Qty': item.Qty,
-                        'Keterangan': item.Keterangan,
-                        'Tggl_Pengiriman': item.Tggl_Pengiriman,
-                        'Mesin': item.Mesin,
-                        'Tggl_Mulai_Produksi': item.Tggl_Mulai_Produksi,
-                        'Tggl_Selesai_Produksi': unicode(datetime.now()),
-                        'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Ton'],
-                        'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
-                        'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
-                    }
-                    complete = OrderCompleteForm(data)
-                    complete.save()
-                    item.delete()
+            Nomor_PO = getattr(form.cleaned_data['Nomor_PO'],'Nomor_PO')
+            print Nomor_PO
+            if Production.objects.get(Mesin=Machine_ID, Nomor_PO=Nomor_PO):
+                production = Production.objects.get(Mesin=Machine_ID, Nomor_PO=Nomor_PO)
+                data = {
+                    'Nomor_PO': production.Nomor_PO,
+                    'Item_desc': production.Item_desc,
+                    'U_of_m': production.U_of_m,
+                    'Qty': production.Qty,
+                    'Keterangan': production.Keterangan,
+                    'Tggl_Pengiriman': production.Tggl_Pengiriman,
+                    'Mesin': production.Mesin,
+                    'Tggl_Mulai_Produksi': production.Tggl_Mulai_Produksi,
+                    'Tggl_Selesai_Produksi': unicode(datetime.now()),
+                    'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Ton'],
+                    'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
+                    'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
+                }
+                complete = OrderCompleteForm(data)
+                complete.save()
+                production.delete()
                 print "%s finished production" % Machine_ID
             else:
                 print "Machine not in production"
