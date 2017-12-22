@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django import forms
 
-from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm
+from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm, HistoryQueryForm
 from models import Order, Production, CmpltOrder
 
 from datetime import datetime
@@ -179,7 +179,7 @@ class ProductionEntryView(TemplateView):
                 'Keterangan': order.Keterangan,
                 'Tggl_Pengiriman': order.Tggl_Pengiriman,
                 'Mesin': Machine_ID,
-                'Tggl_Mulai_Produksi': unicode(datetime.now()),
+                'Tggl_Mulai_Produksi': unicode(datetime.now().replace(microsecond=0)),
             }
             form = OrderProductionForm(data)
             if form.is_valid():
@@ -215,7 +215,7 @@ class ProductionFinishView(TemplateView):
                     'Tggl_Pengiriman': production.Tggl_Pengiriman,
                     'Mesin': production.Mesin,
                     'Tggl_Mulai_Produksi': production.Tggl_Mulai_Produksi,
-                    'Tggl_Selesai_Produksi': unicode(datetime.now()),
+                    'Tggl_Selesai_Produksi': unicode(datetime.now().replace(microsecond=0)),
                     'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Ton'],
                     'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
                     'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
@@ -231,3 +231,32 @@ class ProductionFinishView(TemplateView):
         else:
             print "Form is invalid"
             return render(request, self.template_name)
+
+#----------------------------------HISTORY&DATABASE QUERY--------------------------------
+
+class HistoryView(TemplateView):
+    template_name = "./history.html"
+    def get(self, request):
+        complete = list(CmpltOrder.objects.all())
+        return render(request, self.template_name, {'complete': complete, })
+
+class HistoryQueryView(TemplateView):
+    template_name = "./history_query.html"
+    def get(self, request):
+        if request.GET.get("Query_Berdasarkan") and request.GET.get("Query_Keyword"):
+            query = request.GET.get("Query_Berdasarkan")
+            keyword = request.GET.get("Query_Keyword")
+            return redirect("/query_results/?query=%(x)s&keyword=%(y)s" % {'x': query, 'y': keyword})
+        else:
+            form = HistoryQueryForm()
+            return render(request, self.template_name, {'form': form, })
+
+
+class QueryResultsView(TemplateView):
+    template_name = "./query_results.html"
+    def get(self, request):
+        query = request.GET.get("query")
+        keyword = request.GET.get("keyword")
+        column = query+'__'+'icontains'
+        complete = list(CmpltOrder.objects.filter(**{column:keyword}))
+        return render(request, self.template_name, {'complete': complete, })

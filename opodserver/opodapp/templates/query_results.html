@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>PPIC PORTAL</title>
+    <title>QUERY RESULTS</title>
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -14,10 +14,10 @@
   </head>
   <body>
     {% include "navbar.html" %}
-    <h3 align="center"><b>Open Order ATK90K PPIC/Production Portal</b></h3>
+    <h3 align="center"><b>Hasil Pencarian Database</b></h3>
     <div class="container col-md-12 toscroll_production" align="center">
       <table class="table table-bordered table-striped">
-        <caption><h3 align="center"><b>List Produksi Berjalan</b></h3></caption>
+        <caption><h3 align="center"><b>List Produksi Selesai</b></h3></caption>
         <thead class="thead-dark">
           <tr>
             <th scope="col">ID/Nomor PO</th>
@@ -27,9 +27,11 @@
             <th scope="col">Keterangan</th>
             <th scope="col">Tggl Pengiriman</th>
             <th scope="col">Diproduksi oleh</th>
+            <th scope="col">Tanggal Diproduksi</th>
+            <th scope="col">Tanggal Selesai Produksi</th>
           </tr>
         </thead>
-        {% for item in production %}
+        {% for item in complete %}
         <tr>
           <td>{{ item.Nomor_PO }}</td>
           <td>{{ item.Item_desc }}</td>
@@ -38,12 +40,13 @@
           <td>{{ item.Keterangan }}</td>
           <td>{{ item.Tggl_Pengiriman }}</td>
           <td>{{ item.Mesin }}</td>
+          <td>{{ item.Tggl_Mulai_Produksi }}</td>
+          <td>{{ item.Tggl_Selesai_Produksi }}</td>
         </tr>
         {% endfor %}
       </table><br>
-      <a href="/machine_select" class="btn btn-primary">Mulai Produksi</a><br><br>
-      <a href="/production_finish" class="btn btn-success">Selesai Produksi</a><br><br>
-      <a href="/history" class="btn btn-info">Liat History Order</a><br>
+      <a href="/history_query" class="btn btn-primary">Ganti Kriteria Pencarian</a><br><br>
+      <a href="/ppic_portal" class="btn btn-info">Kembali ke Portal Produksi</a><br><br>
     </div>
   </body>
 </html>

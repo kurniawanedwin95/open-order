@@ -9,11 +9,11 @@ class DateInput(forms.DateInput):
 
 class OrderEntryForm(forms.ModelForm):
     Nomor_PO = forms.CharField(required=True)
-    Item_desc = forms.CharField()
+    Item_desc = forms.CharField() #akan dganti sama Product dan Keterangan Item
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
     
     class Meta:
         model = Order
@@ -31,7 +31,7 @@ class MyModelChoiceField(forms.ModelChoiceField):
         return "%s" % obj.Nomor_PO
  
 # nyari pake Nomor PO, nanti di pass ke OrderEntryForm
-# ModelChoiceField milih an instance of an object
+# ModelChoiceField returns an instance of an object
 class OrderSelectForm(forms.ModelForm):
     order = Order.objects.all()
     Nomor_PO = MyModelChoiceField(queryset=order, to_field_name="Nomor_PO")
@@ -57,9 +57,9 @@ class OrderProductionForm(forms.ModelForm):
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
     Mesin = forms.CharField()
-    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
     
     class Meta:
         model = Production
@@ -90,10 +90,10 @@ class OrderCompleteForm(forms.ModelForm):
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
     Mesin = forms.CharField()
-    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
-    Tggl_Selesai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now()))
+    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Selesai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
     Batch_Output_Berat = forms.CharField()
     Batch_Output_Panjang = forms.CharField()
     Batch_Output_Roll = forms.CharField()
@@ -101,3 +101,25 @@ class OrderCompleteForm(forms.ModelForm):
     class Meta:
         model = CmpltOrder
         fields = ('Nomor_PO', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
+
+class HistoryQueryForm(forms.Form):
+    choices = [
+        ('Nomor_PO', 'Nomor PO'),
+        ('Product', 'Product'),
+        ('Keterangan_Item', 'Keterangan Item'),
+        ('Item_desc', 'Item Desc'),
+        ('U_of_m', 'U of m'),
+        ('Qty', 'Quantity'),
+        ('Keterangan', 'Keterangan'),
+        ('Tggl_Pengiriman', 'Tanggal Pengiriman'),
+        ('Mesin', 'Mesin'),
+        ('Tggl_Mulai_Produksi', 'Tanggal Mulai Produksi'),
+        ('Tggl_Selesai_Produksi', 'Tanggal Selesai Produksi'),
+        ('Batch_Output_Berat', 'Batch Output Berat'),
+        ('Batch_Output_Panjang', 'Batch Output Panjang'),
+        ('Batch_Output_Roll', 'Batch Output Roll'),
+    ]
+    
+    Query_Berdasarkan = forms.ChoiceField(choices=choices)
+    Query_Keyword = forms.CharField()
+    
