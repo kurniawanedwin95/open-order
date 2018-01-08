@@ -36,3 +36,12 @@ class CmpltOrder(models.Model):
     Batch_Output_Berat = models.CharField(max_length = 100)
     Batch_Output_Panjang = models.CharField(max_length = 100)
     Batch_Output_Roll = models.CharField(max_length = 100)
+    
+class CustomerList(models.Model):
+    Customer_Name = models.CharField(max_length = 100)
+    Customer_Address = models.CharField(max_length = 200)
+
+class ProductList(models.Model):
+    Product_Name = models.CharField(max_length = 50)
+    Product_Thickness = models.CharField(max_length = 10)
+    
