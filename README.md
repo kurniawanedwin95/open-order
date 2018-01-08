@@ -15,6 +15,10 @@ sudo /etc/init.d/mysql stop
 
 sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &
 
+ANOTHER METHOD:
+
+sudo mysqld_safe
+
 -----------------------------------------------------------------------------------------
 
 Start by running "python manage.py runserver"
