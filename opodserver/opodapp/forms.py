@@ -1,6 +1,6 @@
 from django import forms
 
-from models import Order, Production, CmpltOrder
+from models import Order, Production, CmpltOrder, ProductList, CustomerList
 
 from datetime import datetime
 
@@ -9,7 +9,9 @@ class DateInput(forms.DateInput):
 
 class OrderEntryForm(forms.ModelForm):
     Nomor_PO = forms.CharField(required=True)
-    Item_desc = forms.CharField() #akan dganti sama Product dan Keterangan Item
+    # choices = something
+    # Product = forms.ChoiceField(choices=choices)
+    Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
@@ -106,7 +108,6 @@ class HistoryQueryForm(forms.Form):
     choices = [
         ('Nomor_PO', 'Nomor PO'),
         ('Product', 'Product'),
-        ('Keterangan_Item', 'Keterangan Item'),
         ('Item_desc', 'Item Desc'),
         ('U_of_m', 'U of m'),
         ('Qty', 'Quantity'),
