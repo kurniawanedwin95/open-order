@@ -3,7 +3,7 @@ Displays lists of currently received order, currently processed order, and produ
 
 Uses Python 2.7, Django 1.11.7
 
-Don't forget to apt-get install "libmysqlclient-dev" and pip install "mysql-python" if running migration asks for "did you install MySQLdb or whatever"
+Don't forget to apt-get install "libmysqlclient-dev" and pip install "mysql-python" and "sqlparse" if running migration asks for "did you install MySQLdb or whatever"
 
 ----------------------------------------------------------------------------------------
 if this error appears "ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)"
