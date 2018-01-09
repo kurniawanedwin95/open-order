@@ -39,7 +39,7 @@ class CmpltOrder(models.Model):
     
 class CustomerList(models.Model):
     Customer_Name = models.CharField(max_length = 100)
-    Customer_Address = models.CharField(max_length = 200)
+    Customer_Number = models.CharField(max_length = 10)
 
 class ProductList(models.Model):
     Product_Name = models.CharField(max_length = 50)
