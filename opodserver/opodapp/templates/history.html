@@ -21,6 +21,7 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">ID/Nomor PO</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Item Description</th>
             <th scope="col">U of M</th>
             <th scope="col">Quantity</th>
@@ -29,11 +30,15 @@
             <th scope="col">Diproduksi oleh</th>
             <th scope="col">Tanggal Diproduksi</th>
             <th scope="col">Tanggal Selesai Produksi</th>
+            <th scope="col">Batch Output Berat(Ton)</th>
+            <th scope="col">Batch Output Panjang(Meter)</th>
+            <th scope="col">Batch Output Roll</th>
           </tr>
         </thead>
         {% for item in complete %}
         <tr>
           <td>{{ item.Nomor_PO }}</td>
+          <td>{{ item.Product_Name }}</td>
           <td>{{ item.Item_desc }}</td>
           <td>{{ item.U_of_m }}</td>
           <td>{{ item.Qty }}</td>
@@ -42,6 +47,9 @@
           <td>{{ item.Mesin }}</td>
           <td>{{ item.Tggl_Mulai_Produksi }}</td>
           <td>{{ item.Tggl_Selesai_Produksi }}</td>
+          <td>{{ item.Batch_Output_Berat }}</td>
+          <td>{{ item.Batch_Output_Panjang }}</td>
+          <td>{{ item.Batch_Output_Roll }}</td>
         </tr>
         {% endfor %}
       </table><br>

@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^production_entry/', views.ProductionEntryView.as_view(), name='production_entry'),
     url(r'^sales_portal/', views.SalesPortalView.as_view(), name='sales_portal'),
     url(r'^ppic_portal/', views.PPICPortalView.as_view(), name='ppic_portal'),
+    url(r'^machine_select_finish/', views.MachineSelectFinishView.as_view(), name='machine_select_finish'),
     url(r'^production_finish/', views.ProductionFinishView.as_view(), name='production_finish'),
     url(r'^history/', views.HistoryView.as_view(), name='history'),
     url(r'^history_query/', views.HistoryQueryView.as_view(), name='history_query'),

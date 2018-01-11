@@ -45,6 +45,7 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">ID/Nomor PO</th>
+                <th scope="col">Product Name</th>
                 <th scope="col">Item Description</th>
                 <th scope="col">U of M</th>
                 <th scope="col">Quantity</th>
@@ -56,6 +57,7 @@
             {% for item in order %}
             <tr>
               <td>{{ item.Nomor_PO }}</td>
+              <td>{{ item.Product_Name }}</td>
               <td>{{ item.Item_desc }}</td>
               <td>{{ item.U_of_m }}</td>
               <td>{{ item.Qty }}</td>

@@ -29,6 +29,9 @@
             <th scope="col">Diproduksi oleh</th>
             <th scope="col">Tanggal Diproduksi</th>
             <th scope="col">Tanggal Selesai Produksi</th>
+            <th scope="col">Batch Output Berat(Ton)</th>
+            <th scope="col">Batch Output Panjang(Meter)</th>
+            <th scope="col">Batch Output Roll</th>
           </tr>
         </thead>
         {% for item in complete %}
@@ -42,6 +45,9 @@
           <td>{{ item.Mesin }}</td>
           <td>{{ item.Tggl_Mulai_Produksi }}</td>
           <td>{{ item.Tggl_Selesai_Produksi }}</td>
+          <td>{{ item.Batch_Output_Berat }}</td>
+          <td>{{ item.Batch_Output_Panjang }}</td>
+          <td>{{ item.Batch_Output_Roll }}</td>
         </tr>
         {% endfor %}
       </table><br>

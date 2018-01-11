@@ -38,11 +38,11 @@
     {% include "navbar.html" %}
     <div class="container" align="center">
       <h3><b>Pilih Mesin Selesai Produksi</b></h3>
-      <form name="finish" method="post">
+      <form name="finish" method="get">
         {% csrf_token %}
         {{ form.as_p }}
         <!--ngeupdate k database-->
-        <button class="btn btn-success" type="submit">Selesai Produksi</button>
+        <button class="btn btn-success" type="submit">Produksi Selesai</button>
       </form>
       <a href="/ppic_portal" class="btn btn-primary">Kembali ke Portal</a>
       <br>
