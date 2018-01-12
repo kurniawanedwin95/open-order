@@ -38,6 +38,34 @@
     {% include "navbar.html" %}
     <div class="container" align="center">
       <h3><b>Pilih Mesin Selesai Produksi</b></h3>
+      <div class="container col-md-12 toscroll_production" align="center">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">ID/Nomor PO</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Item Description</th>
+              <th scope="col">U of M</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Keterangan</th>
+              <th scope="col">Tggl Pengiriman</th>
+              <th scope="col">Diproduksi oleh</th>
+            </tr>
+          </thead>
+          {% for item in production %}
+          <tr>
+            <td>{{ item.Nomor_PO }}</td>
+            <td>{{ item.Product_Name }}</td>
+            <td>{{ item.Item_desc }}</td>
+            <td>{{ item.U_of_m }}</td>
+            <td>{{ item.Qty }}</td>
+            <td>{{ item.Keterangan }}</td>
+            <td>{{ item.Tggl_Pengiriman }}</td>
+            <td>{{ item.Mesin }}</td>
+          </tr>
+          {% endfor %}
+        </table><br>
+      </div>
       <form name="finish" method="post">
         {% csrf_token %}
         {{ form.as_p }}

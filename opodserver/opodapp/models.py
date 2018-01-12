@@ -7,8 +7,8 @@ from django.db import models
 
 class Order(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Product_Name = models.CharField(max_length = 50)
-    # Product_Thickness = models.CharField(max_length = 10)
+    Customer_Number = models.CharField(max_length = 100)
+    Product_Name = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
     Qty = models.CharField(max_length = 100)
@@ -17,8 +17,8 @@ class Order(models.Model):
     
 class Production(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Product_Name = models.CharField(max_length = 50)
-    # Product_Thickness = models.CharField(max_length = 10)
+    Customer_Number = models.CharField(max_length = 100)
+    Product_Name = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
     Qty = models.CharField(max_length = 100)
@@ -29,8 +29,8 @@ class Production(models.Model):
 
 class CmpltOrder(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Product_Name = models.CharField(max_length = 50)
-    # Product_Thickness = models.CharField(max_length = 10)
+    Customer_Number = models.CharField(max_length = 100)
+    Product_Name = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
     Qty = models.CharField(max_length = 100)
@@ -48,6 +48,6 @@ class CustomerList(models.Model):
     Customer_Number = models.CharField(max_length = 10)
 
 class ProductList(models.Model):
-    Product_Name = models.CharField(max_length = 50)
-    Product_Thickness = models.CharField(max_length = 10)
+    Product_Name = models.CharField(max_length = 100)
+    # Product_Thickness = models.CharField(max_length = 10)
     

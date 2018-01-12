@@ -17,28 +17,29 @@ class ProductChoiceField(forms.ModelChoiceField):
         return "%s" % obj.Product_Name
 
 class OrderEntryForm(forms.ModelForm):
-    Nomor_PO = forms.CharField(required=True)
-    products = ProductList.objects.all()
-    Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
+    Nomor_PO = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. 4500705874 SMG'}))
+    Customer_Number = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. EA0001'}))
+    # products = ProductList.objects.all()
+    # Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
+    Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01'}))
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Pengiriman = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'datepicker'}))
     
     class Meta:
         model = Order
-        fields = ('Nomor_PO', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
-        widgets = {
-            'Tggl_Pengiriman': DateInput(),
-        }
-        # widgets = {
-        #     'Tggl_Pengiriman': forms.TextInput(attrs={'placeholder': 'dd/mm/yy'}),
-        # }
-    
-    # Ngubah ProductList Object jadi Product_Name doang pas di form.save()
+        fields = ('Nomor_PO', 'Customer_Number', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+
+    # Ngubah ProductList Object jadi Product_Name doang pas di form.save() n upper case
     def clean_Product_Name(self):
-        data = self.cleaned_data['Product_Name'].Product_Name
+        # data = self.cleaned_data['Product_Name'].Product_Name.upper()
+        data = self.cleaned_data['Product_Name'].upper()
+        return data
+    # Ngubah U of M to uppercase pas di form.save() for consistency
+    def clean_U_of_m(self):
+        data = self.cleaned_data['U_of_m'].upper()
         return data
 
 # nyari pake Nomor PO, nanti di pass ke OrderEntryForm
@@ -64,23 +65,23 @@ class MachineSelectForm(forms.Form):
 
 class OrderProductionForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
+    Customer_Number = forms.CharField()
     Product_Name = forms.CharField()
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Pengiriman = forms.CharField()
     Mesin = forms.CharField()
-    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Mulai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now().replace(microsecond=0)))
     
     class Meta:
         model = Production
-        fields = ('Nomor_PO', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi')
-        widgets = {
-            'Tggl_Pengiriman': DateInput(),
-        }
+        fields = ('Nomor_PO', 'Customer_Number', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi')
+
 
 class ProductionFinishForm(forms.Form):
+    # failed trial to pass argument into form
     # def __init__(self,*args,**kwargs):
     #     Machine_ID = kwargs.pop('Machine_ID')
     #     super(ProductionFinishForm,self).__init__(*args,**kwargs)
@@ -97,9 +98,8 @@ class ProductionFinishForm(forms.Form):
     ]
     
     production = Production.objects.all()
-    # production = Production.objects.filter(Machine_ID=self.Machine)
     Machine_ID = forms.ChoiceField(choices=choices)
-    # Machine_ID = forms.CharField()
+    # to field name Nomor PO tpi isinya hrus beda
     Nomor_PO = NomorPOChoiceField(queryset=production, to_field_name="Nomor_PO")
     Batch_Output_Dalam_Ton = forms.CharField(required=True)
     Batch_Output_Dalam_Meter = forms.CharField(required=True)
@@ -107,28 +107,29 @@ class ProductionFinishForm(forms.Form):
         
 class OrderCompleteForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
+    Customer_Number = forms.CharField()
     Product_Name = forms.CharField()
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
-    Tggl_Pengiriman = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Pengiriman = forms.CharField()
     Mesin = forms.CharField()
-    Tggl_Mulai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
-    Tggl_Selesai_Produksi = forms.CharField(required=False, initial=unicode(datetime.now().replace(microsecond=0)))
-    Batch_Output_Berat = forms.CharField()
-    Batch_Output_Panjang = forms.CharField()
-    Batch_Output_Roll = forms.CharField()
+    Tggl_Mulai_Produksi = forms.CharField()
+    Tggl_Selesai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now().replace(microsecond=0)))
+    Batch_Output_Berat = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 10'}))
+    Batch_Output_Panjang = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 100'}))
+    Batch_Output_Roll = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 5'}))
     
     class Meta:
         model = CmpltOrder
-        fields = ('Nomor_PO', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
+        fields = ('Nomor_PO', 'Customer_Number', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
 
 class HistoryQueryForm(forms.Form):
     choices = [
         ('Nomor_PO', 'Nomor PO'),
+        ('Customer_Number', 'Customer Number'),
         ('Product_Name', 'Product Name'),
-        ('Product_Thickness', 'Product Thickness'),
         ('Item_desc', 'Item Desc'),
         ('U_of_m', 'U of m'),
         ('Qty', 'Quantity'),

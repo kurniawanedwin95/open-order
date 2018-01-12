@@ -75,7 +75,7 @@ class OrderEntryView(TemplateView):
                 return render(request, self.template_name, {'form': form, 'method': False})
             # Order berhasil masuk
             else:
-                print form
+                # print form
                 form.save()
                 form = OrderEntryForm()
                 return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
@@ -118,7 +118,7 @@ class ModificationView(TemplateView):
         Nomor_PO = request.GET.get("Nomor_PO")
         try:
             order = Order.objects.get(Nomor_PO=Nomor_PO)
-            form = OrderEntryForm(initial={'Nomor_PO': order.Nomor_PO, 'Product_Name': order.Product_Name, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
+            form = OrderEntryForm(initial={'Nomor_PO': order.Nomor_PO, 'Customer_Number': order.Customer_Number, 'Product_Name': order.Product_Name, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
             form.fields['Nomor_PO'].widget = forms.HiddenInput()
         except ObjectDoesNotExist:
             print("Order tidak ditemukan")
@@ -133,6 +133,7 @@ class ModificationView(TemplateView):
             Nomor_PO = form.cleaned_data['Nomor_PO']
             former = Order.objects.get(Nomor_PO=Nomor_PO)
             former.Nomor_PO = Nomor_PO
+            former.Customer_Number = form.cleaned_data['Customer_Number']
             former.Product_Name = form.cleaned_data['Product_Name']
             former.Item_desc = form.cleaned_data['Item_desc']
             former.U_of_m = form.cleaned_data['U_of_m']
@@ -177,6 +178,7 @@ class ProductionEntryView(TemplateView):
             order = Order.objects.get(Nomor_PO=Nomor_PO)
             data = {
                 'Nomor_PO': Nomor_PO,
+                'Customer_Number': order.Customer_Number,
                 'Product_Name': order.Product_Name,
                 'Item_desc': order.Item_desc,
                 'U_of_m': order.U_of_m,
@@ -189,7 +191,7 @@ class ProductionEntryView(TemplateView):
             form = OrderProductionForm(data)
             if form.is_valid():
                 form.save()
-                order.delete()
+                order.delete() #mgkin jangan di delete dlu
                 print "%(x)s being worked on %(y)s" % {'x': Nomor_PO, 'y': Machine_ID}
             else:
                 print "Form is not valid, something is wrong"
@@ -213,15 +215,13 @@ class ProductionFinishView(TemplateView):
     template_name = "./production_finish.html"
     
     def get(self, request):
-        
-        # Machine_ID = request.GET.get("Machine_ID")
-        # print Machine_ID
+        production = Production.objects.all()
         form = ProductionFinishForm()
-        
-        return render(request, self.template_name, {'form': form, 'method':False})
+        return render(request, self.template_name, {'form': form, 'production': production, 'method':False})
     
     def post(self, request):
         form = ProductionFinishForm(request.POST)
+        print form
         if form.is_valid():
             Machine_ID = form.cleaned_data['Machine_ID']
             Nomor_PO = getattr(form.cleaned_data['Nomor_PO'],'Nomor_PO')
@@ -230,6 +230,7 @@ class ProductionFinishView(TemplateView):
                 production = Production.objects.get(Mesin=Machine_ID, Nomor_PO=Nomor_PO)
                 data = {
                     'Nomor_PO': production.Nomor_PO,
+                    'Customer_Number': production.Customer_Number,
                     'Product_Name': production.Product_Name,
                     'Item_desc': production.Item_desc,
                     'U_of_m': production.U_of_m,
@@ -246,6 +247,15 @@ class ProductionFinishView(TemplateView):
                 complete = OrderCompleteForm(data)
                 complete.save()
                 production.delete()
+                
+                # if Production.objects.filter(Nomor_PO=Nomor_PO).exists():
+                #     # gak ada yg diremove
+                #     print "%s is still in production in another machine" % Nomor_PO
+                # else:
+                #     order = Order.objects.get(Nomor_PO=Nomor_PO)
+                #     order.delete()
+                #     print "%s finished production" % Nomor_PO
+                
                 print "%s finished production" % Machine_ID
             else:
                 print "Machine not in production"
