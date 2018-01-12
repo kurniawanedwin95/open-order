@@ -3,6 +3,7 @@ from django import forms
 from models import Order, Production, CmpltOrder, ProductList, CustomerList
 
 from datetime import datetime
+import pytz
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -73,7 +74,7 @@ class OrderProductionForm(forms.ModelForm):
     Keterangan = forms.CharField()
     Tggl_Pengiriman = forms.CharField()
     Mesin = forms.CharField()
-    Tggl_Mulai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Mulai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')))
     
     class Meta:
         model = Production
@@ -116,7 +117,7 @@ class OrderCompleteForm(forms.ModelForm):
     Tggl_Pengiriman = forms.CharField()
     Mesin = forms.CharField()
     Tggl_Mulai_Produksi = forms.CharField()
-    Tggl_Selesai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now().replace(microsecond=0)))
+    Tggl_Selesai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now(pytz.timezone('Asia/Jakarta')).replace(microsecond=0)))
     Batch_Output_Berat = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 10'}))
     Batch_Output_Panjang = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 100'}))
     Batch_Output_Roll = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 5'}))

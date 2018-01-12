@@ -12,6 +12,7 @@ from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProdu
 from models import Order, Production, CmpltOrder, ProductList, CustomerList
 
 from datetime import datetime
+import pytz
 
 # Create your views here.
 
@@ -186,7 +187,7 @@ class ProductionEntryView(TemplateView):
                 'Keterangan': order.Keterangan,
                 'Tggl_Pengiriman': order.Tggl_Pengiriman,
                 'Mesin': Machine_ID,
-                'Tggl_Mulai_Produksi': unicode(datetime.now().replace(microsecond=0)),
+                'Tggl_Mulai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
             }
             form = OrderProductionForm(data)
             if form.is_valid():
@@ -239,7 +240,7 @@ class ProductionFinishView(TemplateView):
                     'Tggl_Pengiriman': production.Tggl_Pengiriman,
                     'Mesin': production.Mesin,
                     'Tggl_Mulai_Produksi': production.Tggl_Mulai_Produksi,
-                    'Tggl_Selesai_Produksi': unicode(datetime.now().replace(microsecond=0)),
+                    'Tggl_Selesai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
                     'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Ton'],
                     'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
                     'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
