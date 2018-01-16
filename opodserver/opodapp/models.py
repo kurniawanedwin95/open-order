@@ -7,7 +7,7 @@ from django.db import models
 
 class Order(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Customer_Number = models.CharField(max_length = 100)
+    Customer_Name = models.CharField(max_length = 100)
     Product_Name = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
@@ -17,7 +17,7 @@ class Order(models.Model):
     
 class Production(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Customer_Number = models.CharField(max_length = 100)
+    Customer_Name = models.CharField(max_length = 100)
     Product_Name = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
@@ -29,7 +29,7 @@ class Production(models.Model):
 
 class CmpltOrder(models.Model):
     Nomor_PO = models.CharField(max_length = 100)
-    Customer_Number = models.CharField(max_length = 100)
+    Customer_Name = models.CharField(max_length = 100)
     Product_Name = models.CharField(max_length = 100)
     Item_desc = models.CharField(max_length = 100)
     U_of_m = models.CharField(max_length = 10)
@@ -46,6 +46,10 @@ class CmpltOrder(models.Model):
 class CustomerList(models.Model):
     Customer_Name = models.CharField(max_length = 100)
     Customer_Number = models.CharField(max_length = 10)
+
+class SortedCustomerList(models.Model):
+    Sorted_Customer_Name = models.CharField(max_length = 100)
+    Sorted_Customer_Number = models.CharField(max_length = 10)
 
 class ProductList(models.Model):
     Product_Name = models.CharField(max_length = 100)

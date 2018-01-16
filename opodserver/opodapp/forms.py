@@ -1,6 +1,6 @@
 from django import forms
 
-from models import Order, Production, CmpltOrder, ProductList, CustomerList
+from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList
 
 from datetime import datetime
 import pytz
@@ -17,13 +17,23 @@ class ProductChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return "%s" % obj.Product_Name
 
+class CustomerNameChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return "%s" % obj.Sorted_Customer_Name
+
 class OrderEntryForm(forms.ModelForm):
     Nomor_PO = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. 4500705874 SMG'}))
-    Customer_Number = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. EA0001'}))
-    # products = ProductList.objects.all()
-    # Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
-    Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01'}))
-    Item_desc = forms.CharField()
+    sorted_customer = SortedCustomerList.objects.all()
+    Customer_Name = CustomerNameChoiceField(queryset=sorted_customer, to_field_name="Sorted_Customer_Name")
+    
+    # typeable for quick selection
+    products = ProductList.objects.all()
+    Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
+    
+    # fallback method
+    # Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01'}))
+    
+    Item_desc = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'cust. info/order spec', 'rows':3, 'cols': 30}))
     U_of_m = forms.CharField()
     Qty = forms.CharField()
     Keterangan = forms.CharField()
@@ -31,13 +41,19 @@ class OrderEntryForm(forms.ModelForm):
     
     class Meta:
         model = Order
-        fields = ('Nomor_PO', 'Customer_Number', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+
+    # Ngubah ProductList Object jadi Product_Name doang pas di form.save() n upper case
+    def clean_Customer_Name(self):
+        data = self.cleaned_data['Customer_Name'].Sorted_Customer_Name
+        # data = self.cleaned_data['Product_Name'].upper()
+        return data
 
     # Ngubah ProductList Object jadi Product_Name doang pas di form.save() n upper case
     def clean_Product_Name(self):
-        # data = self.cleaned_data['Product_Name'].Product_Name.upper()
-        data = self.cleaned_data['Product_Name'].upper()
+        data = self.cleaned_data['Product_Name'].Product_Name
         return data
+    
     # Ngubah U of M to uppercase pas di form.save() for consistency
     def clean_U_of_m(self):
         data = self.cleaned_data['U_of_m'].upper()
@@ -66,7 +82,7 @@ class MachineSelectForm(forms.Form):
 
 class OrderProductionForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
-    Customer_Number = forms.CharField()
+    Customer_Name = forms.CharField()
     Product_Name = forms.CharField()
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
@@ -78,7 +94,7 @@ class OrderProductionForm(forms.ModelForm):
     
     class Meta:
         model = Production
-        fields = ('Nomor_PO', 'Customer_Number', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi')
 
 
 class ProductionFinishForm(forms.Form):
@@ -98,6 +114,7 @@ class ProductionFinishForm(forms.Form):
         ('CoEx_6', 'CoEx 6'),
     ]
     
+    # production = Production.objects.values('Nomor_PO').distinct()
     production = Production.objects.all()
     Machine_ID = forms.ChoiceField(choices=choices)
     # to field name Nomor PO tpi isinya hrus beda
@@ -108,7 +125,7 @@ class ProductionFinishForm(forms.Form):
         
 class OrderCompleteForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
-    Customer_Number = forms.CharField()
+    Customer_Name = forms.CharField()
     Product_Name = forms.CharField()
     Item_desc = forms.CharField()
     U_of_m = forms.CharField()
@@ -124,12 +141,12 @@ class OrderCompleteForm(forms.ModelForm):
     
     class Meta:
         model = CmpltOrder
-        fields = ('Nomor_PO', 'Customer_Number', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
 
 class HistoryQueryForm(forms.Form):
     choices = [
         ('Nomor_PO', 'Nomor PO'),
-        ('Customer_Number', 'Customer Number'),
+        ('Customer_Name', 'Customer Name'),
         ('Product_Name', 'Product Name'),
         ('Item_desc', 'Item Desc'),
         ('U_of_m', 'U of m'),

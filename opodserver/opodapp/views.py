@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django import forms
 
 from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm, HistoryQueryForm
-from models import Order, Production, CmpltOrder, ProductList, CustomerList
+from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList
 
 from datetime import datetime
 import pytz
@@ -27,6 +27,16 @@ class OpenOrderView(TemplateView):
     def get(self, request):
         order = list(Order.objects.all())
         production = list(Production.objects.all())
+        # customernumber = SortedCustomerList.objects.values('Sorted_Customer_Name').distinct()
+        
+        # productpon = []
+        # for p in Production.objects.raw('SELECT id, Nomor_PO from opodapp_production'):
+        #     # data = ('%(x)s': '%(y)s)') % {'x': p.Nomor_PO, 'y': p.Nomor_PO}
+        #     productpon.append(p.Nomor_PO)
+        # print productpon
+        
+        uniqueproduction = Production.objects.values_list('Nomor_PO').distinct()
+        print uniqueproduction
         # sudah ada produksi yang selesai
         if CmpltOrder.objects.first():
             complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
@@ -64,6 +74,7 @@ class OrderEntryView(TemplateView):
     # untuk initial page load
     def get(self, request):
         form = OrderEntryForm()
+        print form
         return render(request, self.template_name, {'form': form, 'method': False})
 
     def post(self, request):
@@ -76,7 +87,7 @@ class OrderEntryView(TemplateView):
                 return render(request, self.template_name, {'form': form, 'method': False})
             # Order berhasil masuk
             else:
-                # print form
+                print form
                 form.save()
                 form = OrderEntryForm()
                 return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
@@ -119,7 +130,7 @@ class ModificationView(TemplateView):
         Nomor_PO = request.GET.get("Nomor_PO")
         try:
             order = Order.objects.get(Nomor_PO=Nomor_PO)
-            form = OrderEntryForm(initial={'Nomor_PO': order.Nomor_PO, 'Customer_Number': order.Customer_Number, 'Product_Name': order.Product_Name, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
+            form = OrderEntryForm(initial={'Nomor_PO': order.Nomor_PO, 'Customer_Name': order.Customer_Name, 'Product_Name': order.Product_Name, 'Item_desc': order.Item_desc, 'U_of_m': order.U_of_m, 'Qty': order.Qty, 'Keterangan': order.Keterangan, 'Tggl_Pengiriman': order.Tggl_Pengiriman})
             form.fields['Nomor_PO'].widget = forms.HiddenInput()
         except ObjectDoesNotExist:
             print("Order tidak ditemukan")
@@ -134,7 +145,7 @@ class ModificationView(TemplateView):
             Nomor_PO = form.cleaned_data['Nomor_PO']
             former = Order.objects.get(Nomor_PO=Nomor_PO)
             former.Nomor_PO = Nomor_PO
-            former.Customer_Number = form.cleaned_data['Customer_Number']
+            former.Customer_Name = form.cleaned_data['Customer_Name']
             former.Product_Name = form.cleaned_data['Product_Name']
             former.Item_desc = form.cleaned_data['Item_desc']
             former.U_of_m = form.cleaned_data['U_of_m']
@@ -179,7 +190,7 @@ class ProductionEntryView(TemplateView):
             order = Order.objects.get(Nomor_PO=Nomor_PO)
             data = {
                 'Nomor_PO': Nomor_PO,
-                'Customer_Number': order.Customer_Number,
+                'Customer_Name': order.Customer_Name,
                 'Product_Name': order.Product_Name,
                 'Item_desc': order.Item_desc,
                 'U_of_m': order.U_of_m,
@@ -231,7 +242,7 @@ class ProductionFinishView(TemplateView):
                 production = Production.objects.get(Mesin=Machine_ID, Nomor_PO=Nomor_PO)
                 data = {
                     'Nomor_PO': production.Nomor_PO,
-                    'Customer_Number': production.Customer_Number,
+                    'Customer_Name': production.Customer_Name,
                     'Product_Name': production.Product_Name,
                     'Item_desc': production.Item_desc,
                     'U_of_m': production.U_of_m,
