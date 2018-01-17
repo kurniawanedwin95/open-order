@@ -13,6 +13,10 @@ class NomorPOChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return "%s" % obj.Nomor_PO
 
+# class NomorPOChoiceField2(forms.ModelChoiceField):
+#     def label_from_instance(self, obj):
+#         return "%s" % obj
+
 class ProductChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return "%s" % obj.Product_Name
@@ -27,11 +31,11 @@ class OrderEntryForm(forms.ModelForm):
     Customer_Name = CustomerNameChoiceField(queryset=sorted_customer, to_field_name="Sorted_Customer_Name")
     
     # typeable for quick selection
-    products = ProductList.objects.all()
-    Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
+    # products = ProductList.objects.all()
+    # Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
     
-    # fallback method
-    # Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01'}))
+    # fallback method, capable of multiple entries
+    Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01, BOLIDEX 03'}))
     
     Item_desc = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'cust. info/order spec', 'rows':3, 'cols': 30}))
     U_of_m = forms.CharField()
@@ -43,6 +47,13 @@ class OrderEntryForm(forms.ModelForm):
         model = Order
         fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
 
+    def clean_Nomor_PO(self):
+        data = self.cleaned_data['Nomor_PO']
+        data = data.replace(";", "")
+        data = data.replace("&", "")
+        data = data.replace('"','')
+        return data
+
     # Ngubah ProductList Object jadi Product_Name doang pas di form.save() n upper case
     def clean_Customer_Name(self):
         data = self.cleaned_data['Customer_Name'].Sorted_Customer_Name
@@ -51,7 +62,8 @@ class OrderEntryForm(forms.ModelForm):
 
     # Ngubah ProductList Object jadi Product_Name doang pas di form.save() n upper case
     def clean_Product_Name(self):
-        data = self.cleaned_data['Product_Name'].Product_Name
+        data = self.cleaned_data['Product_Name'].upper()
+        # data = self.cleaned_data['Product_Name'].Product_Name
         return data
     
     # Ngubah U of M to uppercase pas di form.save() for consistency
@@ -98,14 +110,6 @@ class OrderProductionForm(forms.ModelForm):
 
 
 class ProductionFinishForm(forms.Form):
-    # failed trial to pass argument into form
-    # def __init__(self,*args,**kwargs):
-    #     Machine_ID = kwargs.pop('Machine_ID')
-    #     super(ProductionFinishForm,self).__init__(*args,**kwargs)
-    #     self.fields['Machine_ID'].widget = forms.TextInput(attrs={'Machine_ID':Machine_ID})
-    #     production = Production.objects.filter(Machine_ID=self.Machine)
-    #     self.fields['Nomor_PO'].widget = NomorPOChoiceField(queryset = production, to_field_name="Nomor_PO")
-    
     choices = [
         ('CoEx_2', 'CoEx 2'),
         ('CoEx_3', 'CoEx 3'),
@@ -113,16 +117,45 @@ class ProductionFinishForm(forms.Form):
         ('CoEx_5', 'CoEx 5'),
         ('CoEx_6', 'CoEx 6'),
     ]
-    
-    # production = Production.objects.values('Nomor_PO').distinct()
-    production = Production.objects.all()
+
     Machine_ID = forms.ChoiceField(choices=choices)
-    # to field name Nomor PO tpi isinya hrus beda
-    Nomor_PO = NomorPOChoiceField(queryset=production, to_field_name="Nomor_PO")
+    
+    
+    production = [(str(p.Nomor_PO), str(p.Nomor_PO)) for p in Production.objects.raw('SELECT id, Nomor_PO from opodapp_production')]
+    Nomor_PO = forms.ChoiceField(choices=production)
+    
+    # Nomor_PO = forms.CharField() #isi sendiri
+    
     Batch_Output_Dalam_Ton = forms.CharField(required=True)
     Batch_Output_Dalam_Meter = forms.CharField(required=True)
     Batch_Output_Dalam_Roll = forms.CharField(required=True)
+
+# ---------------------------------------UNUSED------------------------------------------
+    # to field name Nomor PO tpi isinya hrus beda
+    # production = Production.objects.values('Nomor_PO').distinct()
+    # Nomor_PO = NomorPOChoiceField2(queryset=production, to_field_name="Nomor_PO")
+
+    # def clean_Nomor_PO(self):
+    #     # clean up the strings
         
+    #     # <option value="{&#39;Nomor_PO&#39;: u&#39;2018TEST15&#39;}" selected>{&#39;Nomor_PO&#39;: u&#39;2018TEST15&#39;}</option>
+        
+    #     data = self.cleaned_data['Nomor_PO']
+    #     # # splits by " mark and takes data between said character
+    #     # data = data.split('"')[1]
+    #     # # truncates the ending 6 characters
+    #     # data = data[:-6]
+    #     # # truncates the beginning 27 characters
+    #     # data = data[27:]
+        
+    #     # other method
+    #     data = data.split('"')[1]
+    #     data = data.split(';')[3]
+    #     data = data.split('&')[0]
+        
+    #     return data
+# --------------------------------------------------------------------------------------
+    
 class OrderCompleteForm(forms.ModelForm):
     Nomor_PO = forms.CharField()
     Customer_Name = forms.CharField()

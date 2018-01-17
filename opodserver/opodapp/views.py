@@ -27,16 +27,6 @@ class OpenOrderView(TemplateView):
     def get(self, request):
         order = list(Order.objects.all())
         production = list(Production.objects.all())
-        # customernumber = SortedCustomerList.objects.values('Sorted_Customer_Name').distinct()
-        
-        # productpon = []
-        # for p in Production.objects.raw('SELECT id, Nomor_PO from opodapp_production'):
-        #     # data = ('%(x)s': '%(y)s)') % {'x': p.Nomor_PO, 'y': p.Nomor_PO}
-        #     productpon.append(p.Nomor_PO)
-        # print productpon
-        
-        uniqueproduction = Production.objects.values_list('Nomor_PO').distinct()
-        print uniqueproduction
         # sudah ada produksi yang selesai
         if CmpltOrder.objects.first():
             complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
@@ -74,7 +64,7 @@ class OrderEntryView(TemplateView):
     # untuk initial page load
     def get(self, request):
         form = OrderEntryForm()
-        print form
+        # print form #debug
         return render(request, self.template_name, {'form': form, 'method': False})
 
     def post(self, request):
@@ -87,7 +77,7 @@ class OrderEntryView(TemplateView):
                 return render(request, self.template_name, {'form': form, 'method': False})
             # Order berhasil masuk
             else:
-                print form
+                # print form #debug
                 form.save()
                 form = OrderEntryForm()
                 return render(request, self.template_name, {'form': form, 'Nomor_PO': Nomor_PO, 'method': True})
@@ -140,7 +130,7 @@ class ModificationView(TemplateView):
     # untuk commit order modification
     def post(self, request):
         form = OrderEntryForm(request.POST)
-        print form
+        # print form #debug
         if form.is_valid():
             Nomor_PO = form.cleaned_data['Nomor_PO']
             former = Order.objects.get(Nomor_PO=Nomor_PO)
@@ -203,7 +193,7 @@ class ProductionEntryView(TemplateView):
             form = OrderProductionForm(data)
             if form.is_valid():
                 form.save()
-                order.delete() #mgkin jangan di delete dlu
+                # order.delete() #mgkin jangan di delete dlu
                 print "%(x)s being worked on %(y)s" % {'x': Nomor_PO, 'y': Machine_ID}
             else:
                 print "Form is not valid, something is wrong"
@@ -236,7 +226,8 @@ class ProductionFinishView(TemplateView):
         print form
         if form.is_valid():
             Machine_ID = form.cleaned_data['Machine_ID']
-            Nomor_PO = getattr(form.cleaned_data['Nomor_PO'],'Nomor_PO')
+            # Nomor_PO as string
+            Nomor_PO = form.cleaned_data['Nomor_PO']
             print Nomor_PO
             if Production.objects.get(Mesin=Machine_ID, Nomor_PO=Nomor_PO):
                 production = Production.objects.get(Mesin=Machine_ID, Nomor_PO=Nomor_PO)
@@ -260,21 +251,24 @@ class ProductionFinishView(TemplateView):
                 complete.save()
                 production.delete()
                 
-                # if Production.objects.filter(Nomor_PO=Nomor_PO).exists():
-                #     # gak ada yg diremove
-                #     print "%s is still in production in another machine" % Nomor_PO
-                # else:
-                #     order = Order.objects.get(Nomor_PO=Nomor_PO)
-                #     order.delete()
-                #     print "%s finished production" % Nomor_PO
+                if Production.objects.filter(Nomor_PO=Nomor_PO).exists():
+                    # gak ada yg diremove
+                    print "%s is still in production in another machine" % Nomor_PO
+                else:
+                    order = Order.objects.get(Nomor_PO=Nomor_PO)
+                    order.delete()
+                    print "%s finished production" % Nomor_PO
                 
                 print "%s finished production" % Machine_ID
             else:
                 print "Machine not in production"
+            production = Production.objects.all()
             form = ProductionFinishForm()
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'production': production})
         else:
             print "Form is invalid"
+            production = Production.objects.all()
+            form = ProductionFinishForm()
             return render(request, self.template_name)
 
 #----------------------------------HISTORY&DATABASE QUERY--------------------------------
