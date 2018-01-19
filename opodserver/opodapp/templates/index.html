@@ -2,21 +2,50 @@
   <head>
     <title>OPEN ORDER</title>
     
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+    <!--refresh page every 5 mins-->
+    <script>
+      setTimeout(function() {
+        window.location.reload(1);
+      }, 5*60000);
+    </script>
+    
+    <!--autoscroll done by https://codepen.io/salman31/pen/dYdGLa -->
+    
+    <script>
+      var my_time;
+      $(document).ready(function() {
+        pageScroll();
+        $("contain").mouseover(function() {
+          clearTimeout(my_time);
+        }).mouseout(function() {
+          pageScroll();
+        });
+      });
+      
+      function pageScroll() {
+        var objDiv = document.getElementById("contain"):
+        objDiv.scrollTop = objDiv.scrollTop + 1;
+        $('p:nth-of-type(1)').html('scrollTop : '+objDiv.scrollTop);
+        $('p:nth-of-type(2)').html('scrollHeight : '+objDiv.scrollHeight);
+        if (objDiv.scrollTop == (objDiv.scrollHeight - 100)) {
+          objDiv.scrollTop = 0;
+        }
+        my_time = setTimeout('pageScroll()', 25);
+      }
+    </script>
+    
   </head>
   <body>
     {% include "navbar.html" %}
     <div class="landscape">
       <h2 style="text-align:center">Jadwal CoEx 90K</h2>
-      <div class="container col-sm-6 col-md-5 toscroll_order">
-        <table class="table table-bordered table-striped">
+      <div class="container col-sm-6 col-md-5 toscroll_order contain">
+        <table class="table table-bordered table-striped" id="table-scroll">
           <caption><h3 align="center"><b>List Order Diterima 90K</b></h3></caption>
           <thead class="thead-dark">
             <tr>

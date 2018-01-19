@@ -35,7 +35,7 @@ class OrderEntryForm(forms.ModelForm):
     # Product_Name = ProductChoiceField(queryset=products, to_field_name="Product_Name")
     
     # fallback method, capable of multiple entries
-    Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01, BOLIDEX 03'}))
+    Product_Name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. QUASAREX 01, BOLIDEX 03', 'size': 50}))
     
     Item_desc = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'cust. info/order spec', 'rows':3, 'cols': 30}))
     U_of_m = forms.CharField()
