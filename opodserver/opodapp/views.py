@@ -299,3 +299,27 @@ class QueryResultsView(TemplateView):
         column = query+'__'+'icontains'
         complete = list(CmpltOrder.objects.filter(**{column:keyword}))
         return render(request, self.template_name, {'complete': complete, })
+
+
+# -------------------------VIEW TO TEST VISUAL ELEMENTS--------------------------------
+class TestView(TemplateView):
+    template_name = "./test.html"
+    def get(self, request):
+        order = list(Order.objects.all())
+        production = list(Production.objects.all())
+        # sudah ada produksi yang selesai
+        if CmpltOrder.objects.first():
+            complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
+        # initial state, belom ada produksi yang selesai sama sekali
+        else:
+            data = {
+                'Nomor_PO': "None",
+                'Mesin': "None yet",
+                'Tggl_Selesai_Produksi': 0,
+                'Batch_Output_Berat': 0,
+                'Batch_Output_Panjang': 0,
+                'Batch_Output_Roll': 0,
+                }
+            complete = CmpltOrder(data)
+        
+        return render(request, self.template_name, {'order': order, 'production': production, 'complete': complete})

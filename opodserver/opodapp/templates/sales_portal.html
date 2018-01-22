@@ -4,33 +4,36 @@
   </head>
   <body>
     {% include "navbar.html" %}
-    <h3 align="center"><b>Open Order ATK90K Sales Portal</b></h3>
-    <div class="container col-md-12 toscroll_order" align="center">
-      <table class="table table-bordered table-striped">
-        <caption><h3 align="center"><b>List Order Diterima 90K</b></h3></caption>
-        <thead class="thead-dark">
+    <div align="center">
+      <h2 align="center"><b>Open Order ATK90K Sales Portal</b></h2>
+      <h3 align="center">List Order Diterima 90K</h3>
+      <div class="container col-md-12 toscroll_view" align="center">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Nomor PO</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Item Description</th>
+              <th scope="col">U of M</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Keterangan</th>
+              <th scope="col">Tggl Pengiriman</th>
+            </tr>
+          </thead>
+          {% for item in order %}
           <tr>
-            <th scope="col">Nomor PO</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Item Description</th>
-            <th scope="col">U of M</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Tggl Pengiriman</th>
+            <td>{{ item.Nomor_PO }}</td>
+            <td>{{ item.Product_Name }}</td>
+            <td>{{ item.Item_desc }}</td>
+            <td>{{ item.U_of_m }}</td>
+            <td>{{ item.Qty }}</td>
+            <td>{{ item.Keterangan }}</td>
+            <td>{{ item.Tggl_Pengiriman }}</td>
           </tr>
-        </thead>
-        {% for item in order %}
-        <tr>
-          <td>{{ item.Nomor_PO }}</td>
-          <td>{{ item.Product_Name }}</td>
-          <td>{{ item.Item_desc }}</td>
-          <td>{{ item.U_of_m }}</td>
-          <td>{{ item.Qty }}</td>
-          <td>{{ item.Keterangan }}</td>
-          <td>{{ item.Tggl_Pengiriman }}</td>
-        </tr>
-        {% endfor %}
-      </table><br>
+          {% endfor %}
+        </table><br>
+      </div>
+      <br>
       <a href="/order_entry" class="btn btn-success">Masukkan Order</a><br><br>
       <a href="/order_modify" class="btn btn-info">Ubah Order</a><br>
     </div>

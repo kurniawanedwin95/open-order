@@ -17,20 +17,30 @@
 
     
     <style>
+      /*changes bootstrap table-striped color*/
+      .table-striped>tbody>tr:nth-child(even)>td,
+      .table-striped>tbody>tr:nth-child(even)>th {
+        background-color: #ffe896; // Choose your own color here
+      }
             
       body {
         background-color: #fefefe;
         padding-top: 45px;
       }
       
-      .toscroll_order {
+      div.toscroll_order {
         overflow: scroll;
         height: 800px;
       }
       
-      .toscroll_production{
+      div.toscroll_production {
         overflow: scroll;
         height: 725px;
+      }
+      
+      div.toscroll_view {
+        overflow: scroll;
+        height: 500px;
       }
       
       .landscape{
@@ -41,20 +51,47 @@
         visibility: hidden;
       }
       
-      #contain {
+      h3 {
+        display: inline-block;
+      }
+      
+      #contain_order {
+        height: 500px;
         overflow-y: scroll;
       }
       
-      #table_scroll {
+      #table_scroll_order {
         width: 100%;
-        margin-top: 100px;
-        margin-bottom: 100px;
+        margin-top: 500px;
+        margin-bottom: 500px;
         border-collapse: collapse;
       }
+      #table_scroll_order thead th {
+        padding: 10px;
+        background-color: #2377ff;
+      }
+      #table_scroll_order tbody td {
+        padding: 10px;
+      }
       
-      /*#table_scroll thead th {*/
-      /*  color: #0083ff;*/
-      /*}*/
+      #contain_production {
+        height: 725px;
+        overflow-y: scroll;
+      }
+      
+      #table_scroll_production {
+        width: 100%;
+        margin-top: 725px;
+        margin-bottom: 725px;
+        border-collapse: collapse;
+      }
+      #table_scroll_production thead th {
+        padding: 10px;
+        background-color: #ea922c;
+      }
+      #table_scroll_production tbody td {
+        padding: 10px;
+      }
 
       /*#notif {*/
       /*  visibility: hidden;*/

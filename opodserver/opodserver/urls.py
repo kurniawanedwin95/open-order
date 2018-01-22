@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^history/', views.HistoryView.as_view(), name='history'),
     url(r'^history_query/', views.HistoryQueryView.as_view(), name='history_query'),
     url(r'^query_results/', views.QueryResultsView.as_view(), name='query_results'),
+    url(r'^test/', views.TestView.as_view(), name='test'),
 ]

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>OPEN ORDER</title>
+    <title>TEST PAGE</title>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -47,9 +47,9 @@
   <body>
     {% include "navbar.html" %}
     <div class="landscape">
-      <!--<h2 style="text-align:center"><b>Jadwal CoEx 90K</b></h2>-->
+      <h2 style="text-align:center"><b>Jadwal CoEx 90K</b></h2>
       <h3 align="left" style="margin-left:10%">List Order Diterima 90K</h3>
-      <h3 style="margin-left:35%">List Produksi CoEx Berjalan</h3>
+      <h3 style="margin-left:10%; padding-bottom:0;">List Produksi CoEx Berjalan</h3>
       <div class="container col-sm-6 col-md-5 toscroll_order" id="contain_order">
         <table class="table table-bordered table-striped" id="table_scroll_order">
           <thead class="thead-dark">
@@ -129,84 +129,7 @@
         <a href="/sales_portal"><button>sales portal</button></a><br>
         <a href="/ppic_portal"><button>ppic portal</button></a><br>
       </div>
+      
     </div>
-    
-<!--#################################PORTRAIT MODE###################################3-->
-<!--    <div class="portrait">-->
-<!--      <h1 align="center">Open Order ATK90K Trial ver.</h1>-->
-<!--      <div class="container col-md-12 toscroll_order">-->
-<!--        <table class="table table-bordered table-striped">-->
-<!--          <thead class="thead-dark">-->
-<!--            <tr>-->
-<!--              <th scope="col">ID/Nomor PO</th>-->
-<!--              <th scope="col">Product Name</th>-->
-<!--              <th scope="col">Item Description</th>-->
-<!--              <th scope="col">U of M</th>-->
-<!--              <th scope="col">Quantity</th>-->
-<!--              <th scope="col">Keterangan</th>-->
-<!--              <th scope="col">Tggl Pengiriman</th>-->
-<!--            </tr>-->
-<!--          </thead>-->
-<!--          {% for item in order %}-->
-<!--          <tr>-->
-<!--            <td>{{ item.Nomor_PO }}</td>-->
-<!--            <td>{{ item.Product_Name }}</td>-->
-<!--            <td>{{ item.Item_desc }}</td>-->
-<!--            <td>{{ item.U_of_m }}</td>-->
-<!--            <td>{{ item.Qty }}</td>-->
-<!--            <td>{{ item.Keterangan }}</td>-->
-<!--            <td>{{ item.Tggl_Pengiriman }}</td>-->
-<!--          </tr>-->
-<!--          {% endfor %}-->
-<!--        </table>-->
-<!--      </div>-->
-<!--      <div class="container col-md-7">-->
-<!--        <h2>-->
-<!--          Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>-->
-<!--          <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>-->
-<!--          <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>-->
-<!--        </h2>-->
-<!--      </div>-->
-<!--      <div class="container col-md-12 toscroll_production">-->
-<!--        <table class="table table-bordered table-striped">-->
-<!--          <thead class="thead-dark">-->
-<!--            <tr>-->
-<!--              <th scope="col">ID/Nomor PO</th>-->
-<!--              <th scope="col">Product Name</th>-->
-<!--              <th scope="col">Item Description</th>-->
-<!--              <th scope="col">U of M</th>-->
-<!--              <th scope="col">Quantity</th>-->
-<!--              <th scope="col">Keterangan</th>-->
-<!--              <th scope="col">Tggl Pengiriman</th>-->
-<!--              <th scope="col">Diproduksi oleh</th>-->
-<!--            </tr>-->
-<!--          </thead>-->
-<!--          {% for item in production %}-->
-<!--          <tr>-->
-<!--            <td>{{ item.Nomor_PO }}</td>-->
-<!--            <td>{{ item.Product_Name }}</td>-->
-<!--            <td>{{ item.Item_desc }}</td>-->
-<!--            <td>{{ item.U_of_m }}</td>-->
-<!--            <td>{{ item.Qty }}</td>-->
-<!--            <td>{{ item.Keterangan }}</td>-->
-<!--            <td>{{ item.Tggl_Pengiriman }}</td>-->
-<!--            <td>{{ item.Mesin }}</td>-->
-<!--          </tr>-->
-<!--          {% endfor %}-->
-<!--        </table>-->
-<!--      </div><br>-->
-<!--      <div class="container col-md-5">-->
-<!--      </div>-->
-<!--      <div class="container col-md-12">-->
-<!--        <a href="/admin"><button>admin entrance</button></a><br>-->
-<!--        <a href="/order_entry"><button>order entry</button></a><br>-->
-<!--        <a href="/order_modify"><button>order modify</button></a><br>-->
-<!--        <a href="/machine_select"><button>machine select</button></a><br>-->
-<!--        <a href="/production_finish"><button>production finish</button></a><br>-->
-<!--        <a href="/sales_portal"><button>sales portal</button></a><br>-->
-<!--        <a href="/ppic_portal"><button>ppic portal</button></a><br>-->
-<!--      </div>-->
-
-    <!--</div>-->
   </body>
 </html>

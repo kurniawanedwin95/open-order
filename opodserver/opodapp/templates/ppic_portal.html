@@ -4,35 +4,38 @@
   </head>
   <body>
     {% include "navbar.html" %}
-    <h3 align="center"><b>Open Order ATK90K PPIC/Production Portal</b></h3>
-    <div class="container col-md-12 toscroll_production" align="center">
-      <table class="table table-bordered table-striped">
-        <caption><h3 align="center"><b>List Produksi Berjalan</b></h3></caption>
-        <thead class="thead-dark">
+    <div align="center">
+      <h2 align="center"><b>Open Order ATK90K PPIC/Production Portal</b></h2>
+      <h3 align="center">List Produksi Berjalan</h3>
+      <div class="container col-md-12 toscroll_view" align="center">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">ID/Nomor PO</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Item Description</th>
+              <th scope="col">U of M</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Keterangan</th>
+              <th scope="col">Tggl Pengiriman</th>
+              <th scope="col">Diproduksi oleh</th>
+            </tr>
+          </thead>
+          {% for item in production %}
           <tr>
-            <th scope="col">ID/Nomor PO</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Item Description</th>
-            <th scope="col">U of M</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Tggl Pengiriman</th>
-            <th scope="col">Diproduksi oleh</th>
+            <td>{{ item.Nomor_PO }}</td>
+            <td>{{ item.Product_Name }}</td>
+            <td>{{ item.Item_desc }}</td>
+            <td>{{ item.U_of_m }}</td>
+            <td>{{ item.Qty }}</td>
+            <td>{{ item.Keterangan }}</td>
+            <td>{{ item.Tggl_Pengiriman }}</td>
+            <td>{{ item.Mesin }}</td>
           </tr>
-        </thead>
-        {% for item in production %}
-        <tr>
-          <td>{{ item.Nomor_PO }}</td>
-          <td>{{ item.Product_Name }}</td>
-          <td>{{ item.Item_desc }}</td>
-          <td>{{ item.U_of_m }}</td>
-          <td>{{ item.Qty }}</td>
-          <td>{{ item.Keterangan }}</td>
-          <td>{{ item.Tggl_Pengiriman }}</td>
-          <td>{{ item.Mesin }}</td>
-        </tr>
-        {% endfor %}
-      </table><br>
+          {% endfor %}
+        </table><br>
+      </div>
+      <br>
       <a href="/machine_select" class="btn btn-primary">Mulai Produksi</a><br><br>
       <a href="/production_finish" class="btn btn-success">Selesai Produksi</a><br><br>
       <a href="/history" class="btn btn-info">Liat History Order</a><br>
