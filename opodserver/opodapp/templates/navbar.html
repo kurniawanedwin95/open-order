@@ -35,7 +35,7 @@
       
       div.toscroll_production {
         overflow: scroll;
-        height: 725px;
+        height: 700px;
       }
       
       div.toscroll_view {
@@ -44,26 +44,27 @@
       }
       
       .landscape{
-        visibility: visible;
+        visibility: hidden;
       }
       
       .portrait{
-        visibility: hidden;
+        visibility: visible;
       }
       
       h3 {
         display: inline-block;
       }
       
+      /*landscape mode*/
       #contain_order {
-        height: 500px;
+        height: 950px;
         overflow-y: scroll;
       }
       
       #table_scroll_order {
         width: 100%;
-        margin-top: 500px;
-        margin-bottom: 500px;
+        margin-top: 950px;
+        margin-bottom: 950px;
         border-collapse: collapse;
       }
       #table_scroll_order thead th {
@@ -75,14 +76,14 @@
       }
       
       #contain_production {
-        height: 725px;
+        height: 800px;
         overflow-y: scroll;
       }
       
       #table_scroll_production {
         width: 100%;
-        margin-top: 725px;
-        margin-bottom: 725px;
+        margin-top: 800px;
+        margin-bottom: 800px;
         border-collapse: collapse;
       }
       #table_scroll_production thead th {
@@ -90,6 +91,56 @@
         background-color: #ea922c;
       }
       #table_scroll_production tbody td {
+        padding: 10px;
+      }
+
+      /*portrait mode*/
+      div.portrait_scroll_order {
+        overflow: scroll;
+        height: 800px;
+      }
+      
+      div.portrait_scroll_production {
+        overflow: scroll;
+        height: 800px;
+      }
+
+      
+      #contain_order_portrait {
+        height: 800px;
+        overflow-y: scroll;
+      }
+      
+      #table_scroll_order_portrait {
+        width: 100%;
+        margin-top: 800px;
+        margin-bottom: 800px;
+        border-collapse: collapse;
+      }
+      #table_scroll_order_portrait thead th {
+        padding: 10px;
+        background-color: #2377ff;
+      }
+      #table_scroll_order_portrait tbody td {
+        padding: 10px;
+      }
+      
+      #contain_production_portrait {
+        height: 800px;
+        overflow-y: scroll;
+      }
+      
+      #table_scroll_production_portrait {
+        width: 100%;
+        margin-top: 800px;
+        margin-bottom: 800px;
+        border-collapse: collapse;
+      }
+      #table_scroll_production_portrait thead th {
+        padding: 10px;
+        background-color: #ea922c;
+      }
+      #table_scroll_production_portrait tbody td {
         padding: 10px;
       }
 
@@ -189,7 +240,7 @@
         <div class="navbar-header" style="">
           <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home"></span>   Open Order ATK90K</a>
         </div>
-        <div class="glyphicon glyphicon-time" style="margin-left: 77%; margin-bottom: 1%; margin-top: 1.1%; font: 14pt sans-serif;" id="txt"></div>
+        <div class="glyphicon glyphicon-time" style="margin-left: 67%; margin-bottom: 1%; margin-top: 1.1%; font: 20pt sans-serif;" id="txt"></div>
       </div>
     </nav>
   </body>

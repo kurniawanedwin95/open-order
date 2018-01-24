@@ -17,28 +17,40 @@
       var my_time;
       // hover mouse to stop scroll
       $(document).ready(function() {
-        pageScroll();
-        $("#contain").mouseover(function() {
-          clearTimeout(my_time);
+        pageScrollOrder();
+        pageScrollProduction();
+        $("#contain_order_portrait").mouseover(function() {
+          clearTimeout(my_time_order);
         }).mouseout(function() {
-          pageScroll();
+          pageScrollOrder();
+        });
+        $("#contain_production_portrait").mouseover(function() {
+          clearTimeout(my_time_production);
+        }).mouseout(function() {
+          pageScrollProduction();
         });
       });
       
-      function pageScroll() {
-      	var orderDiv = document.getElementById("contain_order");
-      	var productionDiv = document.getElementById("contain_production");
+      function pageScrollOrder() {
+      	var orderDiv = document.getElementById("contain_order_portrait");
         orderDiv.scrollTop = orderDiv.scrollTop + 1;
+        // $('p:nth-of-type(1)').html('scrollTop : '+ orderDiv.scrollTop);
+        // $('p:nth-of-type(2)').html('scrollHeight : ' + orderDiv.scrollHeight);
+        if (orderDiv.scrollTop == (orderDiv.scrollHeight - 800)) {
+          orderDiv.scrollTop = 0;
+        }
+        my_time_order = setTimeout('pageScrollOrder()', 25);
+      }
+      
+      function pageScrollProduction() {
+      	var productionDiv = document.getElementById("contain_production_portrait");
         productionDiv.scrollTop = productionDiv.scrollTop + 1;
         // $('p:nth-of-type(1)').html('scrollTop : '+ orderDiv.scrollTop);
         // $('p:nth-of-type(2)').html('scrollHeight : ' + orderDiv.scrollHeight);
-        if (orderDiv.scrollTop == (orderDiv.scrollHeight - 500)) {
-          orderDiv.scrollTop = 0;
-        }
-        if (productionDiv.scrollTop == (productionDiv.scrollHeight - 725)) {
+        if (productionDiv.scrollTop == (productionDiv.scrollHeight - 800)) {
           productionDiv.scrollTop = 0;
         }
-        my_time = setTimeout('pageScroll()', 25);
+        my_time_production = setTimeout('pageScrollProduction()', 25);
       }
     </script>
 
@@ -46,12 +58,11 @@
   
   <body>
     {% include "navbar.html" %}
-    <div class="landscape">
+    <div class="landscape" align="center">
       <h2 style="text-align:center"><b>Jadwal CoEx 90K</b></h2>
-      <h3 align="left" style="margin-left:10%">List Order Diterima 90K</h3>
-      <h3 style="margin-left:10%; padding-bottom:0;">List Produksi CoEx Berjalan</h3>
-      <div class="container col-sm-6 col-md-5 toscroll_order" id="contain_order">
-        <table class="table table-bordered table-striped" id="table_scroll_order">
+      <h3>List Order Diterima 90K</h3>
+      <div class="container col-sm-12 col-md-12 portrait_scroll_order" id="contain_order_portrait">
+        <table class="table table-bordered table-striped" id="table_scroll_order_portrait">
           <thead class="thead-dark">
             <tr>
               <th scope="col">ID/Nomor PO</th>
@@ -78,11 +89,20 @@
           </tbody>
         </table>
       </div>
-      <p></p>
-      <p></p>
-    
-      <div class="container col-sm-6 col-md-7 toscroll_production" id="contain_production">
-        <table class="table table-bordered table-striped" id="table_scroll_production">
+
+      <div class="container col-md-12">
+        <h2>
+          Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>
+          <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>
+          <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>
+        </h2>
+      </div>
+
+      <div align="center">
+        <h3>List Produksi CoEx Berjalan</h3>
+      </div>
+      <div class="container col-sm-12 col-md-12 portrait_scroll_production" id="contain_production_portrait">
+        <table class="table table-bordered table-striped" id="table_scroll_production_portrait">
           <thead class="thead-dark">
             <tr>
               <th scope="col">ID/Nomor PO</th>
@@ -109,16 +129,6 @@
           {% endfor %}
         </table>
       </div><br>
-      
-      <div class="container col-md-5">
-      </div>
-      <div class="container col-md-7">
-        <h2>
-          Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>
-          <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>
-          <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>
-        </h2>
-      </div>
       
       <div class="container col-md-12">
         <a href="/admin"><button>admin entrance</button></a><br>

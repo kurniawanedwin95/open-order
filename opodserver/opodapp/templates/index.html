@@ -17,41 +17,80 @@
       var my_time;
       // hover mouse to stop scroll
       $(document).ready(function() {
-        pageScroll();
-        $("#contain").mouseover(function() {
-          clearTimeout(my_time);
+        // pageScroll();
+        // $("#contain").mouseover(function() {
+        //   clearTimeout(my_time);
+        // }).mouseout(function() {
+        //   pageScroll();
+        // });
+        pageScrollOrder();
+        pageScrollProduction();
+        $("#contain_order_portrait").mouseover(function() {
+          clearTimeout(my_time_order);
         }).mouseout(function() {
-          pageScroll();
+          pageScrollOrder();
+        });
+        $("#contain_production_portrait").mouseover(function() {
+          clearTimeout(my_time_production);
+        }).mouseout(function() {
+          pageScrollProduction();
         });
       });
       
-      function pageScroll() {
-      	var orderDiv = document.getElementById("contain_order");
-      	var productionDiv = document.getElementById("contain_production");
+      // autoscroll by https://codepen.io/salman31/pen/dYdGLa
+      // for landscape
+      // function pageScroll() {
+      // 	var orderDiv = document.getElementById("contain_order");
+      // 	var productionDiv = document.getElementById("contain_production");
+      //   orderDiv.scrollTop = orderDiv.scrollTop + 1;
+      //   productionDiv.scrollTop = productionDiv.scrollTop + 1;
+      //   // $('p:nth-of-type(1)').html('scrollTop : '+ orderDiv.scrollTop);
+      //   // $('p:nth-of-type(2)').html('scrollHeight : ' + orderDiv.scrollHeight);
+      //   if (orderDiv.scrollTop == (orderDiv.scrollHeight - 950)) {
+      //     orderDiv.scrollTop = 0;
+      //   }
+      //   if (productionDiv.scrollTop == (productionDiv.scrollHeight - 800)) {
+      //     productionDiv.scrollTop = 0;
+      //   }
+      //   my_time = setTimeout('pageScroll()', 25);
+      // }
+      
+      
+      // for portrait
+      function pageScrollOrder() {
+      	var orderDiv = document.getElementById("contain_order_portrait");
         orderDiv.scrollTop = orderDiv.scrollTop + 1;
+        // $('p:nth-of-type(1)').html('scrollTop : '+ orderDiv.scrollTop);
+        // $('p:nth-of-type(2)').html('scrollHeight : ' + orderDiv.scrollHeight);
+        if (orderDiv.scrollTop == (orderDiv.scrollHeight - 800)) {
+          orderDiv.scrollTop = 0;
+        }
+        my_time_order = setTimeout('pageScrollOrder()', 25);
+      }
+      
+      function pageScrollProduction() {
+      	var productionDiv = document.getElementById("contain_production_portrait");
         productionDiv.scrollTop = productionDiv.scrollTop + 1;
         // $('p:nth-of-type(1)').html('scrollTop : '+ orderDiv.scrollTop);
         // $('p:nth-of-type(2)').html('scrollHeight : ' + orderDiv.scrollHeight);
-        if (orderDiv.scrollTop == (orderDiv.scrollHeight - 500)) {
-          orderDiv.scrollTop = 0;
-        }
-        if (productionDiv.scrollTop == (productionDiv.scrollHeight - 725)) {
+        if (productionDiv.scrollTop == (productionDiv.scrollHeight - 800)) {
           productionDiv.scrollTop = 0;
         }
-        my_time = setTimeout('pageScroll()', 25);
+        my_time_production = setTimeout('pageScrollProduction()', 25);
       }
+
     </script>
 
   </head>
   
   <body>
     {% include "navbar.html" %}
-    <div class="landscape">
-      <!--<h2 style="text-align:center"><b>Jadwal CoEx 90K</b></h2>-->
-      <h3 align="left" style="margin-left:10%">List Order Diterima 90K</h3>
-      <h3 style="margin-left:35%">List Produksi CoEx Berjalan</h3>
-      <div class="container col-sm-6 col-md-5 toscroll_order" id="contain_order">
-        <table class="table table-bordered table-striped" id="table_scroll_order">
+<!--#################################PORTRAIT MODE###################################3-->
+    <div class="portrait" align="center">
+      <h2 style="text-align:center"><b>Jadwal CoEx 90K</b></h2>
+      <h3>List Order Diterima 90K</h3>
+      <div class="container col-sm-12 col-md-12 portrait_scroll_order" id="contain_order_portrait">
+        <table class="table table-bordered table-striped" id="table_scroll_order_portrait">
           <thead class="thead-dark">
             <tr>
               <th scope="col">ID/Nomor PO</th>
@@ -78,11 +117,20 @@
           </tbody>
         </table>
       </div>
-      <p></p>
-      <p></p>
-    
-      <div class="container col-sm-6 col-md-7 toscroll_production" id="contain_production">
-        <table class="table table-bordered table-striped" id="table_scroll_production">
+
+      <div class="container col-md-12">
+        <h2>
+          Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>
+          <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>
+          <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>
+        </h2>
+      </div>
+
+      <div align="center">
+        <h3>List Produksi CoEx Berjalan</h3>
+      </div>
+      <div class="container col-sm-12 col-md-12 portrait_scroll_production" id="contain_production_portrait">
+        <table class="table table-bordered table-striped" id="table_scroll_production_portrait">
           <thead class="thead-dark">
             <tr>
               <th scope="col">ID/Nomor PO</th>
@@ -110,16 +158,6 @@
         </table>
       </div><br>
       
-      <div class="container col-md-5">
-      </div>
-      <div class="container col-md-7">
-        <h2>
-          Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>
-          <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>
-          <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>
-        </h2>
-      </div>
-      
       <div class="container col-md-12">
         <a href="/admin"><button>admin entrance</button></a><br>
         <a href="/order_entry"><button>order entry</button></a><br>
@@ -129,84 +167,92 @@
         <a href="/sales_portal"><button>sales portal</button></a><br>
         <a href="/ppic_portal"><button>ppic portal</button></a><br>
       </div>
+      
     </div>
     
-<!--#################################PORTRAIT MODE###################################3-->
-<!--    <div class="portrait">-->
-<!--      <h1 align="center">Open Order ATK90K Trial ver.</h1>-->
-<!--      <div class="container col-md-12 toscroll_order">-->
-<!--        <table class="table table-bordered table-striped">-->
-<!--          <thead class="thead-dark">-->
-<!--            <tr>-->
-<!--              <th scope="col">ID/Nomor PO</th>-->
-<!--              <th scope="col">Product Name</th>-->
-<!--              <th scope="col">Item Description</th>-->
-<!--              <th scope="col">U of M</th>-->
-<!--              <th scope="col">Quantity</th>-->
-<!--              <th scope="col">Keterangan</th>-->
-<!--              <th scope="col">Tggl Pengiriman</th>-->
-<!--            </tr>-->
-<!--          </thead>-->
-<!--          {% for item in order %}-->
-<!--          <tr>-->
-<!--            <td>{{ item.Nomor_PO }}</td>-->
-<!--            <td>{{ item.Product_Name }}</td>-->
-<!--            <td>{{ item.Item_desc }}</td>-->
-<!--            <td>{{ item.U_of_m }}</td>-->
-<!--            <td>{{ item.Qty }}</td>-->
-<!--            <td>{{ item.Keterangan }}</td>-->
-<!--            <td>{{ item.Tggl_Pengiriman }}</td>-->
-<!--          </tr>-->
-<!--          {% endfor %}-->
-<!--        </table>-->
-<!--      </div>-->
-<!--      <div class="container col-md-7">-->
-<!--        <h2>-->
-<!--          Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>-->
-<!--          <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>-->
-<!--          <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>-->
-<!--        </h2>-->
-<!--      </div>-->
-<!--      <div class="container col-md-12 toscroll_production">-->
-<!--        <table class="table table-bordered table-striped">-->
-<!--          <thead class="thead-dark">-->
-<!--            <tr>-->
-<!--              <th scope="col">ID/Nomor PO</th>-->
-<!--              <th scope="col">Product Name</th>-->
-<!--              <th scope="col">Item Description</th>-->
-<!--              <th scope="col">U of M</th>-->
-<!--              <th scope="col">Quantity</th>-->
-<!--              <th scope="col">Keterangan</th>-->
-<!--              <th scope="col">Tggl Pengiriman</th>-->
-<!--              <th scope="col">Diproduksi oleh</th>-->
-<!--            </tr>-->
-<!--          </thead>-->
-<!--          {% for item in production %}-->
-<!--          <tr>-->
-<!--            <td>{{ item.Nomor_PO }}</td>-->
-<!--            <td>{{ item.Product_Name }}</td>-->
-<!--            <td>{{ item.Item_desc }}</td>-->
-<!--            <td>{{ item.U_of_m }}</td>-->
-<!--            <td>{{ item.Qty }}</td>-->
-<!--            <td>{{ item.Keterangan }}</td>-->
-<!--            <td>{{ item.Tggl_Pengiriman }}</td>-->
-<!--            <td>{{ item.Mesin }}</td>-->
-<!--          </tr>-->
-<!--          {% endfor %}-->
-<!--        </table>-->
-<!--      </div><br>-->
-<!--      <div class="container col-md-5">-->
-<!--      </div>-->
-<!--      <div class="container col-md-12">-->
-<!--        <a href="/admin"><button>admin entrance</button></a><br>-->
-<!--        <a href="/order_entry"><button>order entry</button></a><br>-->
-<!--        <a href="/order_modify"><button>order modify</button></a><br>-->
-<!--        <a href="/machine_select"><button>machine select</button></a><br>-->
-<!--        <a href="/production_finish"><button>production finish</button></a><br>-->
-<!--        <a href="/sales_portal"><button>sales portal</button></a><br>-->
-<!--        <a href="/ppic_portal"><button>ppic portal</button></a><br>-->
-<!--      </div>-->
+<!--####################################LANDSCAPE MODE#################################-->
+    <!--<div class="landscape">-->
+    <!--  <h3 align="left" style="margin-left:15%">List Order Diterima 90K</h3>-->
+    <!--  <h3 style="margin-left:35%">List Produksi CoEx Berjalan</h3>-->
+    <!--  <div class="container col-sm-6 col-md-5 toscroll_order" id="contain_order">-->
+    <!--    <table class="table table-bordered table-striped" id="table_scroll_order">-->
+    <!--      <thead class="thead-dark">-->
+    <!--        <tr>-->
+    <!--          <th scope="col">ID/Nomor PO</th>-->
+    <!--          <th scope="col">Product Name</th>-->
+    <!--          <th scope="col">Item Description</th>-->
+    <!--          <th scope="col">U of M</th>-->
+    <!--          <th scope="col">Quantity</th>-->
+    <!--          <th scope="col">Keterangan</th>-->
+    <!--          <th scope="col">Tggl Pengiriman</th>-->
+    <!--        </tr>-->
+    <!--      </thead>-->
+    <!--      <tbody>-->
+    <!--        {% for item in order %}-->
+    <!--        <tr>-->
+    <!--          <td>{{ item.Nomor_PO }}</td>-->
+    <!--          <td>{{ item.Product_Name }}</td>-->
+    <!--          <td>{{ item.Item_desc }}</td>-->
+    <!--          <td>{{ item.U_of_m }}</td>-->
+    <!--          <td>{{ item.Qty }}</td>-->
+    <!--          <td>{{ item.Keterangan }}</td>-->
+    <!--          <td>{{ item.Tggl_Pengiriman }}</td>-->
+    <!--        </tr>-->
+    <!--        {% endfor %}-->
+    <!--      </tbody>-->
+    <!--    </table>-->
+    <!--  </div>-->
 
+    <!--  <div class="container col-sm-6 col-md-7 toscroll_production" id="contain_production">-->
+    <!--    <table class="table table-bordered table-striped" id="table_scroll_production">-->
+    <!--      <thead class="thead-dark">-->
+    <!--        <tr>-->
+    <!--          <th scope="col">ID/Nomor PO</th>-->
+    <!--          <th scope="col">Product Name</th>-->
+    <!--          <th scope="col">Item Description</th>-->
+    <!--          <th scope="col">U of M</th>-->
+    <!--          <th scope="col">Quantity</th>-->
+    <!--          <th scope="col">Keterangan</th>-->
+    <!--          <th scope="col">Tggl Pengiriman</th>-->
+    <!--          <th scope="col">Diproduksi oleh</th>-->
+    <!--        </tr>-->
+    <!--      </thead>-->
+    <!--      {% for item in production %}-->
+    <!--      <tr>-->
+    <!--        <td>{{ item.Nomor_PO }}</td>-->
+    <!--        <td>{{ item.Product_Name }}</td>-->
+    <!--        <td>{{ item.Item_desc }}</td>-->
+    <!--        <td>{{ item.U_of_m }}</td>-->
+    <!--        <td>{{ item.Qty }}</td>-->
+    <!--        <td>{{ item.Keterangan }}</td>-->
+    <!--        <td>{{ item.Tggl_Pengiriman }}</td>-->
+    <!--        <td>{{ item.Mesin }}</td>-->
+    <!--      </tr>-->
+    <!--      {% endfor %}-->
+    <!--    </table>-->
+    <!--  </div><br>-->
+      
+    <!--  <div class="container col-md-5">-->
+    <!--  </div>-->
+    <!--  <div class="container col-md-7">-->
+    <!--    <h2>-->
+    <!--      Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>-->
+    <!--      <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>-->
+    <!--      <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>-->
+    <!--    </h2>-->
+    <!--  </div>-->
+      
+    <!--  <div class="container col-md-12">-->
+    <!--    <a href="/admin"><button>admin entrance</button></a><br>-->
+    <!--    <a href="/order_entry"><button>order entry</button></a><br>-->
+    <!--    <a href="/order_modify"><button>order modify</button></a><br>-->
+    <!--    <a href="/machine_select"><button>machine select</button></a><br>-->
+    <!--    <a href="/production_finish"><button>production finish</button></a><br>-->
+    <!--    <a href="/sales_portal"><button>sales portal</button></a><br>-->
+    <!--    <a href="/ppic_portal"><button>ppic portal</button></a><br>-->
+    <!--  </div>-->
     <!--</div>-->
+
+
   </body>
 </html>
