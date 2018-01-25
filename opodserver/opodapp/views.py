@@ -174,30 +174,34 @@ class ProductionEntryView(TemplateView):
     def post(self, request):
         Nomor_PO_list = request.POST.getlist("Nomor_PO")
         Machine_ID = request.POST.get("Machine_ID")
+        production = Production.objects.all()
         for Nomor_PO in Nomor_PO_list:
             # ngebuang character terakhir("/") di string Nomor_PO
             # Nomor_PO = Nomor_PO[:-1]
-            order = Order.objects.get(Nomor_PO=Nomor_PO)
-            data = {
-                'Nomor_PO': Nomor_PO,
-                'Customer_Name': order.Customer_Name,
-                'Product_Name': order.Product_Name,
-                'Item_desc': order.Item_desc,
-                'U_of_m': order.U_of_m,
-                'Qty': order.Qty,
-                'Keterangan': order.Keterangan,
-                'Tggl_Pengiriman': order.Tggl_Pengiriman,
-                'Mesin': Machine_ID,
-                'Tggl_Mulai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
-            }
-            form = OrderProductionForm(data)
-            if form.is_valid():
-                form.save()
-                # order.delete() #mgkin jangan di delete dlu
-                print "%(x)s being worked on %(y)s" % {'x': Nomor_PO, 'y': Machine_ID}
+            if Production.objects.filter(Nomor_PO=Nomor_PO,Mesin=Machine_ID).exists():
+                print "%s not added, already in production/does not exist" % Nomor_PO
             else:
-                print "Form is not valid, something is wrong"
-                return redirect('/')
+                order = Order.objects.get(Nomor_PO=Nomor_PO)
+                data = {
+                    'Nomor_PO': Nomor_PO,
+                    'Customer_Name': order.Customer_Name,
+                    'Product_Name': order.Product_Name,
+                    'Item_desc': order.Item_desc,
+                    'U_of_m': order.U_of_m,
+                    'Qty': order.Qty,
+                    'Keterangan': order.Keterangan,
+                    'Tggl_Pengiriman': order.Tggl_Pengiriman,
+                    'Mesin': Machine_ID,
+                    'Tggl_Mulai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
+                }
+                form = OrderProductionForm(data)
+                if form.is_valid():
+                    form.save()
+                    # order.delete() #mgkin jangan di delete dlu
+                    print "%(x)s being worked on %(y)s" % {'x': Nomor_PO, 'y': Machine_ID}
+                else:
+                    print "Form is not valid, something is wrong"
+                    return redirect('/')
         return redirect('/machine_select/')
 
 class MachineSelectFinishView(TemplateView):
@@ -243,7 +247,7 @@ class ProductionFinishView(TemplateView):
                     'Mesin': production.Mesin,
                     'Tggl_Mulai_Produksi': production.Tggl_Mulai_Produksi,
                     'Tggl_Selesai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
-                    'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Ton'],
+                    'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Kg'],
                     'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
                     'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
                 }

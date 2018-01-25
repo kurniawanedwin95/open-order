@@ -126,7 +126,7 @@ class ProductionFinishForm(forms.Form):
     
     # Nomor_PO = forms.CharField() #isi sendiri
     
-    Batch_Output_Dalam_Ton = forms.CharField(required=True)
+    Batch_Output_Dalam_Kg = forms.CharField(required=True)
     Batch_Output_Dalam_Meter = forms.CharField(required=True)
     Batch_Output_Dalam_Roll = forms.CharField(required=True)
 
