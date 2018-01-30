@@ -3,3 +3,4 @@
 *.migrations
 *.settings.py
 *.settings-backup.py
+*settings.py
