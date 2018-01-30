@@ -26,7 +26,7 @@ class OpenOrderView(TemplateView):
     
     def get(self, request):
         order = list(Order.objects.all())
-        production = list(Production.objects.all())
+        production = list(Production.objects.all().order_by('Tggl_Pengiriman'))
         # sudah ada produksi yang selesai
         if CmpltOrder.objects.first():
             complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
@@ -52,7 +52,7 @@ class SalesPortalView(TemplateView):
 class PPICPortalView(TemplateView):
     template_name = "./ppic_portal.html"
     def get(self, request):
-        production = list(Production.objects.all())
+        production = list(Production.objects.all().order_by('Tggl_Pengiriman'))
         return render(request, self.template_name, {'production': production, })
 
 #--------------------------------ORDER ENTRY&MODIFICATION-------------------------------
