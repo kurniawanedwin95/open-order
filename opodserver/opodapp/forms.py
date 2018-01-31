@@ -27,7 +27,7 @@ class CustomerNameChoiceField(forms.ModelChoiceField):
 
 class OrderEntryForm(forms.ModelForm):
     Nomor_PO = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'e.g. 4500705874 SMG'}))
-    sorted_customer = SortedCustomerList.objects.all()
+    sorted_customer = SortedCustomerList.objects.all().order_by('Sorted_Customer_Number')
     Customer_Name = CustomerNameChoiceField(queryset=sorted_customer, to_field_name="Sorted_Customer_Name")
     
     # typeable for quick selection
@@ -42,10 +42,11 @@ class OrderEntryForm(forms.ModelForm):
     Qty = forms.CharField()
     Keterangan = forms.CharField()
     Tggl_Pengiriman = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'datepicker'}))
+    Tggl_Order_Masuk = forms.CharField(widget=forms.HiddenInput(), initial=unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')))
     
     class Meta:
         model = Order
-        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Tggl_Order_Masuk')
 
     def clean_Nomor_PO(self):
         data = self.cleaned_data['Nomor_PO']
@@ -69,6 +70,10 @@ class OrderEntryForm(forms.ModelForm):
     # Ngubah U of M to uppercase pas di form.save() for consistency
     def clean_U_of_m(self):
         data = self.cleaned_data['U_of_m'].upper()
+        return data
+    
+    def clean_Tggl_Order_Masuk(self):
+        data = unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M'))
         return data
 
 # nyari pake Nomor PO, nanti di pass ke OrderEntryForm
@@ -101,12 +106,13 @@ class OrderProductionForm(forms.ModelForm):
     Qty = forms.CharField()
     Keterangan = forms.CharField()
     Tggl_Pengiriman = forms.CharField()
+    Tggl_Order_Masuk = forms.CharField()
     Mesin = forms.CharField()
     Tggl_Mulai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')))
     
     class Meta:
         model = Production
-        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Tggl_Order_Masuk', 'Mesin', 'Tggl_Mulai_Produksi')
 
 
 class ProductionFinishForm(forms.Form):
@@ -165,6 +171,7 @@ class OrderCompleteForm(forms.ModelForm):
     Qty = forms.CharField()
     Keterangan = forms.CharField()
     Tggl_Pengiriman = forms.CharField()
+    Tggl_Order_Masuk = forms.CharField()
     Mesin = forms.CharField()
     Tggl_Mulai_Produksi = forms.CharField()
     Tggl_Selesai_Produksi = forms.CharField(required=True, initial=unicode(datetime.now(pytz.timezone('Asia/Jakarta')).replace(microsecond=0)))
@@ -174,18 +181,19 @@ class OrderCompleteForm(forms.ModelForm):
     
     class Meta:
         model = CmpltOrder
-        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Tggl_Order_Masuk', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
 
 class HistoryQueryForm(forms.Form):
     choices = [
         ('Nomor_PO', 'Nomor PO'),
-        ('Customer_Name', 'Customer Name'),
+        ('Sorted_Customer_Name', 'Customer Name'),
         ('Product_Name', 'Product Name'),
         ('Item_desc', 'Item Desc'),
         ('U_of_m', 'U of m'),
         ('Qty', 'Quantity'),
         ('Keterangan', 'Keterangan'),
         ('Tggl_Pengiriman', 'Tanggal Pengiriman'),
+        ('Tggl_Order_Masuk', 'Tanggal Order Masuk'),
         ('Mesin', 'Mesin'),
         ('Tggl_Mulai_Produksi', 'Tanggal Mulai Produksi'),
         ('Tggl_Selesai_Produksi', 'Tanggal Selesai Produksi'),
@@ -196,4 +204,18 @@ class HistoryQueryForm(forms.Form):
     
     Query_Berdasarkan = forms.ChoiceField(choices=choices)
     Query_Keyword = forms.CharField()
+
+class AddCustomerForm(forms.Form):
+    # Sorted_Customer_Name = forms.CharField(widget=forms.TextInput(attrs={'label': 'Customer Name'}))
+    # Sorted_Customer_Number = forms.CharField(widget=forms.TextInput(attrs={'label': 'Customer Number'}))
+    New_Customer_Name = forms.CharField()
+    New_Customer_Number = forms.CharField()
     
+    # class Meta:
+    #     model = SortedCustomerList
+    #     fields = ('Sorted_Customer_Name', 'Sorted_Customer_Number')
+    #     labels = {
+    #         'Sorted_Customer_Name': 'Customer Name',
+    #         'Sorted_Customer_Number': 'Customer Number'
+    #     }
+        

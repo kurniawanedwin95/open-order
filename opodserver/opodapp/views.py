@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django import forms
 
-from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm, HistoryQueryForm
+from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm, HistoryQueryForm, AddCustomerForm
 from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList
 
 from datetime import datetime
@@ -142,6 +142,7 @@ class ModificationView(TemplateView):
             former.Qty = form.cleaned_data['Qty']
             former.Keterangan = form.cleaned_data['Keterangan']
             former.Tggl_Pengiriman = form.cleaned_data['Tggl_Pengiriman']
+            former.Tggl_Order_Masuk = form.cleaned_data['Tggl_Order_Masuk'] #remove to not update during modification
             former.save()
             print('Entry %s updated' % Nomor_PO)
         else:
@@ -191,6 +192,7 @@ class ProductionEntryView(TemplateView):
                     'Qty': order.Qty,
                     'Keterangan': order.Keterangan,
                     'Tggl_Pengiriman': order.Tggl_Pengiriman,
+                    'Tggl_Order_Masuk': order.Tggl_Order_Masuk,
                     'Mesin': Machine_ID,
                     'Tggl_Mulai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
                 }
@@ -244,6 +246,7 @@ class ProductionFinishView(TemplateView):
                     'Qty': production.Qty,
                     'Keterangan': production.Keterangan,
                     'Tggl_Pengiriman': production.Tggl_Pengiriman,
+                    'Tggl_Order_Masuk': production.Tggl_Order_Masuk,
                     'Mesin': production.Mesin,
                     'Tggl_Mulai_Produksi': production.Tggl_Mulai_Produksi,
                     'Tggl_Selesai_Produksi': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M')),
@@ -304,6 +307,27 @@ class QueryResultsView(TemplateView):
         complete = list(CmpltOrder.objects.filter(**{column:keyword}))
         return render(request, self.template_name, {'complete': complete, })
 
+
+# -----------------------------ADD CUSTOMER TO DATABASE----------------------------------
+#-------------------------------------UNTESTED-------------------------------------------
+class AddCustomerView(TemplateView):
+    template_name= "./add_customer.html"
+    def get(self, request):
+        form = AddCustomerForm()
+        return render(request, self.template_name, {'form': form, })
+    
+    def post(self, request):
+        form = AddCustomerForm(request.POST)
+        if form.is_valid():
+            newcustomername = form.cleaned_data['New_Customer_Name']
+            newcustomernumber = form.cleaned_data['New_Customer_Number']
+            if SortedCustomerList.objects.filter(Sorted_Customer_Number=newcustomernumber).exists():
+                print 'Error. Previously entered Customer Number entered.'
+            else:
+                sortedcustomer = SortedCustomerList(Sorted_Customer_Name=newcustomername, Sorted_Customer_Number=newcustomernumber)
+                sortedcustomer.save()
+        form = AddCustomerForm()
+        return render(request, self.template_name, {'form': form})
 
 # -------------------------VIEW TO TEST VISUAL ELEMENTS--------------------------------
 class TestView(TemplateView):
