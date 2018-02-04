@@ -17,6 +17,7 @@ sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &
 
 ANOTHER METHOD:
 
+sudo dpkg-reconfigure mysql-server-5.5
 sudo mysqld_safe
 
 -----------------------------------------------------------------------------------------
