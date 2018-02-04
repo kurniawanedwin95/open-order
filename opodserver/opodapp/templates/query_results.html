@@ -26,6 +26,7 @@
               <th scope="col">Batch Output Berat(Kg)</th>
               <th scope="col">Batch Output Panjang(Meter)</th>
               <th scope="col">Batch Output Roll</th>
+              <th scope="col">Remarks</th>
             </tr>
           </thead>
           {% for item in complete %}
@@ -45,6 +46,7 @@
             <td>{{ item.Batch_Output_Berat }}</td>
             <td>{{ item.Batch_Output_Panjang }}</td>
             <td>{{ item.Batch_Output_Roll }}</td>
+            <td>{{ item.Remarks }}</td>
           </tr>
           {% endfor %}
         </table><br>

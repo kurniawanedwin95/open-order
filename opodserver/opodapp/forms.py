@@ -135,6 +135,8 @@ class ProductionFinishForm(forms.Form):
     Batch_Output_Dalam_Kg = forms.CharField(required=True)
     Batch_Output_Dalam_Meter = forms.CharField(required=True)
     Batch_Output_Dalam_Roll = forms.CharField(required=True)
+    Remarks = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'cols': 50}))
+
 
 # ---------------------------------------UNUSED------------------------------------------
     # to field name Nomor PO tpi isinya hrus beda
@@ -178,10 +180,11 @@ class OrderCompleteForm(forms.ModelForm):
     Batch_Output_Berat = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 10'}))
     Batch_Output_Panjang = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 100'}))
     Batch_Output_Roll = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'e.g. 5'}))
+    Remarks = forms.CharField()
     
     class Meta:
         model = CmpltOrder
-        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Tggl_Order_Masuk', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll')
+        fields = ('Nomor_PO', 'Customer_Name', 'Product_Name', 'Item_desc', 'U_of_m', 'Qty', 'Keterangan', 'Tggl_Pengiriman', 'Tggl_Order_Masuk', 'Mesin', 'Tggl_Mulai_Produksi', 'Tggl_Selesai_Produksi', 'Batch_Output_Berat', 'Batch_Output_Panjang', 'Batch_Output_Roll', 'Remarks')
 
 class HistoryQueryForm(forms.Form):
     choices = [

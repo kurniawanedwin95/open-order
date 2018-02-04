@@ -253,6 +253,7 @@ class ProductionFinishView(TemplateView):
                     'Batch_Output_Berat': form.cleaned_data['Batch_Output_Dalam_Kg'],
                     'Batch_Output_Panjang': form.cleaned_data['Batch_Output_Dalam_Meter'],
                     'Batch_Output_Roll': form.cleaned_data['Batch_Output_Dalam_Roll'],
+                    'Remarks': form.cleaned_data['Remarks'],
                 }
                 complete = OrderCompleteForm(data)
                 complete.save()

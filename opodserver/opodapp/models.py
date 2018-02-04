@@ -45,6 +45,7 @@ class CmpltOrder(models.Model):
     Batch_Output_Berat = models.CharField(max_length = 100)
     Batch_Output_Panjang = models.CharField(max_length = 100)
     Batch_Output_Roll = models.CharField(max_length = 100)
+    Remarks = models.CharField(max_length = 500)
     
 class CustomerList(models.Model):
     Customer_Name = models.CharField(max_length = 100)
