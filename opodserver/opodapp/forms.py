@@ -127,10 +127,15 @@ class ProductionFinishForm(forms.Form):
     Machine_ID = forms.ChoiceField(choices=choices)
     
     
-    production = [(str(p.Nomor_PO), str(p.Nomor_PO)) for p in Production.objects.raw('SELECT id, Nomor_PO from opodapp_production')]
-    Nomor_PO = forms.ChoiceField(choices=production)
-    
+    # production = [(str(p.Nomor_PO), str(p.Nomor_PO)) for p in Production.objects.raw('SELECT id, Nomor_PO from opodapp_production')]
+    # print production
+    # Nomor_PO = forms.ChoiceField(choices=production)
     # Nomor_PO = forms.CharField() #isi sendiri
+    def __init__(self, *args, **kwargs):
+        production = [(str(p.Nomor_PO), str(p.Nomor_PO)) for p in Production.objects.all()]
+        super(ProductionFinishForm, self).__init__(*args, **kwargs)
+        self.fields['Nomor_PO'] = forms.ChoiceField(choices=production)
+    
     
     Batch_Output_Dalam_Kg = forms.CharField(required=True)
     Batch_Output_Dalam_Meter = forms.CharField(required=True)

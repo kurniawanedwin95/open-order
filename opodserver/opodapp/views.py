@@ -225,6 +225,8 @@ class ProductionFinishView(TemplateView):
     def get(self, request):
         production = Production.objects.all()
         form = ProductionFinishForm()
+        field_order = ['Machine_ID', 'Nomor_PO', 'Batch_Output_Dalam_Kg', 'Batch_Output_Dalam_Meter', 'Batch_Output_Dalam_Roll', 'Remarks']
+        form.order_fields(field_order)
         return render(request, self.template_name, {'form': form, 'production': production, 'method':False})
     
     def post(self, request):
