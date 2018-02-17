@@ -1,10 +1,15 @@
 <html>
   <head>
-    <title>TEST PAGE</title>
+    <title>OPEN ORDER</title>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'jquery-ui-themes-1.12.1/jquery-ui.css' %}">
+    <script type="text/javascript" src="{% static 'jquery-1.12.4.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+
     
     
     <script>
@@ -14,23 +19,49 @@
         window.location.reload(1);
       }, 5*60000);
 
-      var my_time;
+      // var my_time;
       // hover mouse to stop scroll
       $(document).ready(function() {
+        // pageScroll();
+        // $("#contain").mouseover(function() {
+        //   clearTimeout(my_time);
+        // }).mouseout(function() {
+        //   pageScroll();
+        // });
         pageScrollOrder();
         pageScrollProduction();
-        $("#contain_order_portrait").mouseover(function() {
-          clearTimeout(my_time_order);
-        }).mouseout(function() {
-          pageScrollOrder();
-        });
-        $("#contain_production_portrait").mouseover(function() {
-          clearTimeout(my_time_production);
-        }).mouseout(function() {
-          pageScrollProduction();
-        });
+        // $("#contain_order_portrait").mouseover(function() {
+        //   clearTimeout(my_time_order);
+        // }).mouseout(function() {
+        //   pageScrollOrder();
+        // });
+        // $("#contain_production_portrait").mouseover(function() {
+        //   clearTimeout(my_time_production);
+        // }).mouseout(function() {
+        //   pageScrollProduction();
+        // });
       });
       
+      // autoscroll by https://codepen.io/salman31/pen/dYdGLa
+      // for landscape
+      // function pageScroll() {
+      // 	var orderDiv = document.getElementById("contain_order");
+      // 	var productionDiv = document.getElementById("contain_production");
+      //   orderDiv.scrollTop = orderDiv.scrollTop + 1;
+      //   productionDiv.scrollTop = productionDiv.scrollTop + 1;
+      //   // $('p:nth-of-type(1)').html('scrollTop : '+ orderDiv.scrollTop);
+      //   // $('p:nth-of-type(2)').html('scrollHeight : ' + orderDiv.scrollHeight);
+      //   if (orderDiv.scrollTop == (orderDiv.scrollHeight - 950)) {
+      //     orderDiv.scrollTop = 0;
+      //   }
+      //   if (productionDiv.scrollTop == (productionDiv.scrollHeight - 800)) {
+      //     productionDiv.scrollTop = 0;
+      //   }
+      //   my_time = setTimeout('pageScroll()', 25);
+      // }
+      
+      
+      // for portrait
       function pageScrollOrder() {
       	var orderDiv = document.getElementById("contain_order_portrait");
         orderDiv.scrollTop = orderDiv.scrollTop + 1;
@@ -52,14 +83,16 @@
         }
         my_time_production = setTimeout('pageScrollProduction()', 25);
       }
+
     </script>
 
   </head>
   
   <body>
     {% include "navbar.html" %}
-    <div class="landscape" align="center">
-      <h2 style="text-align:center"><b>Jadwal CoEx 90K</b></h2>
+<!--#################################PORTRAIT MODE###################################3-->
+    <div class="portrait" align="center">
+      <h2 style="text-align:center"><b>Jadwal CoEx ATK90K</b></h2>
       <h3>List Order Diterima 90K</h3>
       <div class="container col-sm-12 col-md-12 portrait_scroll_order" id="contain_order_portrait">
         <table class="table table-bordered table-striped" id="table_scroll_order_portrait">
@@ -71,14 +104,21 @@
               <th scope="col">U of M</th>
               <th scope="col">Quantity</th>
               <th scope="col">Keterangan</th>
-              <th scope="col">Tggl Pengiriman</th>
+              <th scope="col">Tanggal Pengiriman</th>
             </tr>
           </thead>
           <tbody>
             {% for item in order %}
             <tr>
               <td>{{ item.Nomor_PO }}</td>
-              <td>{{ item.Product_Name }}</td>
+              {% if item.Product_Name == "QUASAREX 01" %}
+                <td style="background-color: #337ab7"> <!-- primary -->
+                {% else %}
+                <td style="background-color: #f0ad4e"> <!-- warning -->
+                <!--#d9534f danger-->
+                <!-- #5cb85c success-->
+              {% endif %}
+              {{ item.Product_Name }}</td>
               <td>{{ item.Item_desc }}</td>
               <td>{{ item.U_of_m }}</td>
               <td>{{ item.Qty }}</td>
@@ -111,7 +151,7 @@
               <th scope="col">U of M</th>
               <th scope="col">Quantity</th>
               <th scope="col">Keterangan</th>
-              <th scope="col">Tggl Pengiriman</th>
+              <th scope="col">Tanggal Pengiriman</th>
               <th scope="col">Diproduksi oleh</th>
             </tr>
           </thead>
@@ -124,22 +164,119 @@
             <td>{{ item.Qty }}</td>
             <td>{{ item.Keterangan }}</td>
             <td>{{ item.Tggl_Pengiriman }}</td>
-            <td>{{ item.Mesin }}</td>
+            {% if item.Mesin == "CoEx_2" and coex2.Status == "Running"  or item.Mesin == "CoEx_3" and coex3.Status == "Running" or item.Mesin == "CoEx_4" and coex4.Status == "Running" or item.Mesin == "CoEx_5" and coex5.Status == "Running" or item.Mesin == "CoEx_6" and coex6.Status == "Running"%}
+              <td style="background-color: #5cb85c"> <!-- Machine is running -->
+            {% elif item.Mesin == "CoEx_2" and coex2.Status == "in Maintenance"  or item.Mesin == "CoEx_3" and coex3.Status == "in Maintenance" or item.Mesin == "CoEx_4" and coex4.Status == "in Maintenance" or item.Mesin == "CoEx_5" and coex5.Status == "in Maintenance" or item.Mesin == "CoEx_6" and coex6.Status == "in Maintenance"%}
+              <td style="background-color: #5bc0de"> <!-- Machine is in Maintenance -->
+            {% elif item.Mesin == "CoEx_2" and coex2.Status == "Out of Service"  or item.Mesin == "CoEx_3" and coex3.Status == "Out of Service" or item.Mesin == "CoEx_4" and coex4.Status == "Out of Service" or item.Mesin == "CoEx_5" and coex5.Status == "Out of Service" or item.Mesin == "CoEx_6" and coex6.Status == "Out of Service"%}
+              <td style="background-color: #d9534f"> <!-- Machine is out of service -->
+            {% elif item.Mesin == "CoEx_2" and coex2.Status == "Stopped"  or item.Mesin == "CoEx_3" and coex3.Status == "Stopped" or item.Mesin == "CoEx_4" and coex4.Status == "Stopped" or item.Mesin == "CoEx_5" and coex5.Status == "Stopped" or item.Mesin == "CoEx_6" and coex6.Status == "Stopped"%}
+              <td style="background-color: #f0ad4e"> <!-- Machine is stopped -->
+            {% else %}
+              <td>
+            {% endif %}
+            {{ item.Mesin }}</td>
           </tr>
           {% endfor %}
         </table>
       </div><br>
       
-      <div class="container col-md-12">
-        <a href="/admin"><button>admin entrance</button></a><br>
-        <a href="/order_entry"><button>order entry</button></a><br>
-        <a href="/order_modify"><button>order modify</button></a><br>
-        <a href="/machine_select"><button>machine select</button></a><br>
-        <a href="/production_finish"><button>production finish</button></a><br>
-        <a href="/sales_portal"><button>sales portal</button></a><br>
-        <a href="/ppic_portal"><button>ppic portal</button></a><br>
-      </div>
+      <!--##############################BUTTONS FOR DEBUG#############################-->
+      <!--<div class="container col-md-12">-->
+      <!--  <a href="/admin"><button>admin entrance</button></a><br>-->
+      <!--  <a href="/order_entry"><button>order entry</button></a><br>-->
+      <!--  <a href="/order_modify"><button>order modify</button></a><br>-->
+      <!--  <a href="/machine_select"><button>machine select</button></a><br>-->
+      <!--  <a href="/production_finish"><button>production finish</button></a><br>-->
+      <!--  <a href="/sales_portal"><button>sales portal</button></a><br>-->
+      <!--  <a href="/ppic_portal"><button>ppic portal</button></a><br>-->
+      <!--</div>-->
       
     </div>
+    
+<!--####################################LANDSCAPE MODE#################################-->
+    <!--<div class="landscape">-->
+    <!--  <h3 align="left" style="margin-left:15%">List Order Diterima 90K</h3>-->
+    <!--  <h3 style="margin-left:35%">List Produksi CoEx Berjalan</h3>-->
+    <!--  <div class="container col-sm-6 col-md-5 toscroll_order" id="contain_order">-->
+    <!--    <table class="table table-bordered table-striped" id="table_scroll_order">-->
+    <!--      <thead class="thead-dark">-->
+    <!--        <tr>-->
+    <!--          <th scope="col">ID/Nomor PO</th>-->
+    <!--          <th scope="col">Product Name</th>-->
+    <!--          <th scope="col">Item Description</th>-->
+    <!--          <th scope="col">U of M</th>-->
+    <!--          <th scope="col">Quantity</th>-->
+    <!--          <th scope="col">Keterangan</th>-->
+    <!--          <th scope="col">Tanggal Pengiriman</th>-->
+    <!--        </tr>-->
+    <!--      </thead>-->
+    <!--      <tbody>-->
+    <!--        {% for item in order %}-->
+    <!--        <tr>-->
+    <!--          <td>{{ item.Nomor_PO }}</td>-->
+    <!--          <td>{{ item.Product_Name }}</td>-->
+    <!--          <td>{{ item.Item_desc }}</td>-->
+    <!--          <td>{{ item.U_of_m }}</td>-->
+    <!--          <td>{{ item.Qty }}</td>-->
+    <!--          <td>{{ item.Keterangan }}</td>-->
+    <!--          <td>{{ item.Tggl_Pengiriman }}</td>-->
+    <!--        </tr>-->
+    <!--        {% endfor %}-->
+    <!--      </tbody>-->
+    <!--    </table>-->
+    <!--  </div>-->
+
+    <!--  <div class="container col-sm-6 col-md-7 toscroll_production" id="contain_production">-->
+    <!--    <table class="table table-bordered table-striped" id="table_scroll_production">-->
+    <!--      <thead class="thead-dark">-->
+    <!--        <tr>-->
+    <!--          <th scope="col">ID/Nomor PO</th>-->
+    <!--          <th scope="col">Product Name</th>-->
+    <!--          <th scope="col">Item Description</th>-->
+    <!--          <th scope="col">U of M</th>-->
+    <!--          <th scope="col">Quantity</th>-->
+    <!--          <th scope="col">Keterangan</th>-->
+    <!--          <th scope="col">Tanggal Pengiriman</th>-->
+    <!--          <th scope="col">Diproduksi oleh</th>-->
+    <!--        </tr>-->
+    <!--      </thead>-->
+    <!--      {% for item in production %}-->
+    <!--      <tr>-->
+    <!--        <td>{{ item.Nomor_PO }}</td>-->
+    <!--        <td>{{ item.Product_Name }}</td>-->
+    <!--        <td>{{ item.Item_desc }}</td>-->
+    <!--        <td>{{ item.U_of_m }}</td>-->
+    <!--        <td>{{ item.Qty }}</td>-->
+    <!--        <td>{{ item.Keterangan }}</td>-->
+    <!--        <td>{{ item.Tggl_Pengiriman }}</td>-->
+    <!--        <td>{{ item.Mesin }}</td>-->
+    <!--      </tr>-->
+    <!--      {% endfor %}-->
+    <!--    </table>-->
+    <!--  </div><br>-->
+      
+    <!--  <div class="container col-md-5">-->
+    <!--  </div>-->
+    <!--  <div class="container col-md-7">-->
+    <!--    <h2>-->
+    <!--      Hasil Produksi Terakhir {{ complete.Tggl_Selesai_Produksi }}: <br>-->
+    <!--      <b>Nomor PO: {{ complete.Nomor_PO }}</b><br>-->
+    <!--      <b>Mesin: {{ complete.Mesin }} - {{ complete.Batch_Output_Berat }}ton - {{ complete.Batch_Output_Panjang }}kg - {{ complete.Batch_Output_Roll }}roll</b>-->
+    <!--    </h2>-->
+    <!--  </div>-->
+      
+    <!--  <div class="container col-md-12">-->
+    <!--    <a href="/admin"><button>admin entrance</button></a><br>-->
+    <!--    <a href="/order_entry"><button>order entry</button></a><br>-->
+    <!--    <a href="/order_modify"><button>order modify</button></a><br>-->
+    <!--    <a href="/machine_select"><button>machine select</button></a><br>-->
+    <!--    <a href="/production_finish"><button>production finish</button></a><br>-->
+    <!--    <a href="/sales_portal"><button>sales portal</button></a><br>-->
+    <!--    <a href="/ppic_portal"><button>ppic portal</button></a><br>-->
+    <!--  </div>-->
+    <!--</div>-->
+
+
   </body>
 </html>

@@ -8,8 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django import forms
 
-from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, OrderCompleteForm, HistoryQueryForm, AddCustomerForm
-from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList
+from forms import OrderEntryForm, OrderSelectForm, MachineSelectForm, OrderProductionForm, ProductionFinishForm, MachineUpdateStatusForm, CoEx2Form, CoEx3Form, CoEx4Form, CoEx5Form, CoEx6Form, OrderCompleteForm, HistoryQueryForm, AddCustomerForm
+from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList, CoEx2, CoEx3, CoEx4, CoEx5, CoEx6
 
 from datetime import datetime
 import pytz
@@ -27,6 +27,11 @@ class OpenOrderView(TemplateView):
     def get(self, request):
         order = list(Order.objects.all())
         production = list(Production.objects.all().order_by('Tggl_Pengiriman'))
+        coex2 = CoEx2.objects.latest('Timestamp')
+        coex3 = CoEx3.objects.latest('Timestamp')
+        coex4 = CoEx4.objects.latest('Timestamp')
+        coex5 = CoEx5.objects.latest('Timestamp')
+        coex6 = CoEx6.objects.latest('Timestamp')
         # sudah ada produksi yang selesai
         if CmpltOrder.objects.first():
             complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
@@ -41,7 +46,7 @@ class OpenOrderView(TemplateView):
                 'Batch_Output_Roll': 0,
                 }
             complete = CmpltOrder(data)
-        return render(request, self.template_name, {'order': order, 'production': production, 'complete': complete})
+        return render(request, self.template_name, {'order': order, 'production': production, 'complete': complete, 'coex2': coex2, 'coex3': coex3, 'coex4': coex4, 'coex5': coex5, 'coex6': coex6})
 
 class SalesPortalView(TemplateView):
     template_name = "./sales_portal.html"
@@ -281,6 +286,76 @@ class ProductionFinishView(TemplateView):
             form = ProductionFinishForm()
             return render(request, self.template_name)
 
+class MachineUpdateStatusView(TemplateView):
+    template_name = "./machine_update_status.html"
+    
+    def get(self, request):
+        form = MachineUpdateStatusForm()
+        coex2 = list(CoEx2.objects.all())
+        coex3 = list(CoEx3.objects.all())
+        coex4 = list(CoEx4.objects.all())
+        coex5 = list(CoEx5.objects.all())
+        coex6 = list(CoEx6.objects.all())
+        return render(request, self.template_name, {'form': form, 'coex2': coex2, 'coex3': coex3, 'coex4': coex4, 'coex5': coex5, 'coex6': coex6})
+    
+    def post(self, request):
+        form = MachineUpdateStatusForm(request.POST)
+        if form.is_valid():
+            mesin = form.cleaned_data['Mesin']
+            status = form.cleaned_data['Status']
+            if mesin == "CoEx 2":
+                # update CoEx2
+                data = {
+                    'Status': status,
+                    'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
+                }
+                model = CoEx2Form(data)
+                model.save()
+            elif mesin == "CoEx 3":
+                # update CoEx3
+                data = {
+                    'Status': status,
+                    'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
+                }
+                model = CoEx3Form(data)
+                model.save()
+            elif mesin == "CoEx 4":
+                # update CoEx4
+                data = {
+                    'Status': status,
+                    'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
+                }
+                model = CoEx4Form(data)
+                model.save()
+            elif mesin == "CoEx 5":
+                # update CoEx5
+                data = {
+                    'Status': status,
+                    'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
+                }
+                model = CoEx5Form(data)
+                model.save()
+            elif mesin == "CoEx 6":
+                # update CoEx6
+                data = {
+                    'Status': status,
+                    'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
+                }
+                model = CoEx6Form(data)
+                model.save()
+            else:
+                print "you got bamboozled"
+            form = MachineUpdateStatusForm()
+            coex2 = list(CoEx2.objects.all())
+            coex3 = list(CoEx3.objects.all())
+            coex4 = list(CoEx4.objects.all())
+            coex5 = list(CoEx5.objects.all())
+            coex6 = list(CoEx6.objects.all())
+            return render(request, self.template_name, {'form': form, 'coex2': coex2, 'coex3': coex3, 'coex4': coex4, 'coex5': coex5, 'coex6': coex6})
+        else:
+            print "Form is invalid."
+            return redirect("/ppic_portal/")
+
 #----------------------------------HISTORY&DATABASE QUERY--------------------------------
 
 class HistoryView(TemplateView):
@@ -337,7 +412,14 @@ class TestView(TemplateView):
     template_name = "./test.html"
     def get(self, request):
         order = list(Order.objects.all())
-        production = list(Production.objects.all())
+        production = list(Production.objects.all().order_by('Tggl_Pengiriman'))
+        coex2 = CoEx2.objects.latest('Timestamp')
+        coex3 = CoEx3.objects.latest('Timestamp')
+        coex4 = CoEx4.objects.latest('Timestamp')
+        coex5 = CoEx5.objects.latest('Timestamp')
+        coex6 = CoEx6.objects.latest('Timestamp')
+        print coex2.Status
+
         # sudah ada produksi yang selesai
         if CmpltOrder.objects.first():
             complete = CmpltOrder.objects.latest('Tggl_Selesai_Produksi')
@@ -353,4 +435,4 @@ class TestView(TemplateView):
                 }
             complete = CmpltOrder(data)
         
-        return render(request, self.template_name, {'order': order, 'production': production, 'complete': complete})
+        return render(request, self.template_name, {'order': order, 'production': production, 'complete': complete, 'coex2': coex2, 'coex3': coex3, 'coex4': coex4, 'coex5': coex5, 'coex6': coex6})

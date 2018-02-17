@@ -58,4 +58,23 @@ class SortedCustomerList(models.Model):
 class ProductList(models.Model):
     Product_Name = models.CharField(max_length = 100)
     # Product_Thickness = models.CharField(max_length = 10)
+
+class CoEx2(models.Model):
+    Status = models.CharField(max_length = 30)
+    Timestamp = models.CharField(max_length = 100)
     
+class CoEx3(models.Model):
+    Status = models.CharField(max_length = 30)
+    Timestamp = models.CharField(max_length = 100)
+
+class CoEx4(models.Model):
+    Status = models.CharField(max_length = 30)
+    Timestamp = models.CharField(max_length = 100)
+
+class CoEx5(models.Model):
+    Status = models.CharField(max_length = 30)
+    Timestamp = models.CharField(max_length = 100)
+
+class CoEx6(models.Model):
+    Status = models.CharField(max_length = 30)
+    Timestamp = models.CharField(max_length = 100)

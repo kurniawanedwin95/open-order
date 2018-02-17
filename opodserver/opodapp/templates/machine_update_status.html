@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <title>Update Status Mesin</title>
+  </head>
+  <body>
+    {% include "navbar.html" %}
+    <div align="center">
+      <h2 align="center"><b>Status Mesin CoEx 90K</b></h2>
+      <div class="container col-md-1">
+        <!--padding-->
+      </div>
+      <div class="container col-md-2">
+        <table class="table table-bordered table-striped" id="table_machine_status">
+          <caption><h3>CoEx 2</h3></caption>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Waktu</th>
+            </tr>
+          </thead>
+          {% for item in coex2 %}
+          <tr>
+            <td>{{ item.Status }}</td>
+            <td>{{ item.Timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+      <div class="container col-md-2">
+        <table class="table table-bordered table-striped" id="table_machine_status">
+          <caption><h3>CoEx 3</h3></caption>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Waktu</th>
+            </tr>
+          </thead>
+          {% for item in coex3 %}
+          <tr>
+            <td>{{ item.Status }}</td>
+            <td>{{ item.Timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+      <div class="container col-md-2">
+        <table class="table table-bordered table-striped" id="table_machine_status">
+          <caption><h3>CoEx 4</h3></caption>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Waktu</th>
+            </tr>
+          </thead>
+          {% for item in coex4 %}
+          <tr>
+            <td>{{ item.Status }}</td>
+            <td>{{ item.Timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+      <div class="container col-md-2">
+        <table class="table table-bordered table-striped" id="table_machine_status">
+          <caption><h3>CoEx 5</h3></caption>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Waktu</th>
+            </tr>
+          </thead>
+          {% for item in coex5 %}
+          <tr>
+            <td>{{ item.Status }}</td>
+            <td>{{ item.Timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+      <div class="container col-md-2">
+        <table class="table table-bordered table-striped" id="table_machine_status">
+          <caption><h3>CoEx 6</h3></caption>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Waktu</th>
+            </tr>
+          </thead>
+          {% for item in coex6 %}
+          <tr>
+            <td>{{ item.Status }}</td>
+            <td>{{ item.Timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </table><br>
+      </div>
+      <div class="container col-md-1" align="center">
+        <!--padding-->
+      </div>
+      <h3 align="center">Update Status Mesin</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update Status</button><!--ngirim k database-->
+      </form>
+      <a href="/ppic_portal" class="btn btn-danger">Kembali ke Portal</a><br><br>
+    </div>
+  </body>
+</html>

@@ -157,7 +157,18 @@
             <td>{{ item.Qty }}</td>
             <td>{{ item.Keterangan }}</td>
             <td>{{ item.Tggl_Pengiriman }}</td>
-            <td>{{ item.Mesin }}</td>
+            {% if item.Mesin == "CoEx_2" and coex2.Status == "Running"  or item.Mesin == "CoEx_3" and coex3.Status == "Running" or item.Mesin == "CoEx_4" and coex4.Status == "Running" or item.Mesin == "CoEx_5" and coex5.Status == "Running" or item.Mesin == "CoEx_6" and coex6.Status == "Running"%}
+              <td style="background-color: #5cb85c"> <!-- Machine is running -->
+            {% elif item.Mesin == "CoEx_2" and coex2.Status == "in Maintenance"  or item.Mesin == "CoEx_3" and coex3.Status == "in Maintenance" or item.Mesin == "CoEx_4" and coex4.Status == "in Maintenance" or item.Mesin == "CoEx_5" and coex5.Status == "in Maintenance" or item.Mesin == "CoEx_6" and coex6.Status == "in Maintenance"%}
+              <td style="background-color: #5bc0de"> <!-- Machine is in Maintenance -->
+            {% elif item.Mesin == "CoEx_2" and coex2.Status == "Out of Service"  or item.Mesin == "CoEx_3" and coex3.Status == "Out of Service" or item.Mesin == "CoEx_4" and coex4.Status == "Out of Service" or item.Mesin == "CoEx_5" and coex5.Status == "Out of Service" or item.Mesin == "CoEx_6" and coex6.Status == "Out of Service"%}
+              <td style="background-color: #d9534f"> <!-- Machine is out of service -->
+            {% elif item.Mesin == "CoEx_2" and coex2.Status == "Stopped"  or item.Mesin == "CoEx_3" and coex3.Status == "Stopped" or item.Mesin == "CoEx_4" and coex4.Status == "Stopped" or item.Mesin == "CoEx_5" and coex5.Status == "Stopped" or item.Mesin == "CoEx_6" and coex6.Status == "Stopped"%}
+              <td style="background-color: #f0ad4e"> <!-- Machine is stopped -->
+            {% else %}
+              <td>
+            {% endif %}
+            {{ item.Mesin }}</td>
           </tr>
           {% endfor %}
         </table>

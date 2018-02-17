@@ -1,6 +1,6 @@
 from django import forms
 
-from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList
+from models import Order, Production, CmpltOrder, ProductList, CustomerList, SortedCustomerList, CoEx2, CoEx3, CoEx4, CoEx5, CoEx6
 
 from datetime import datetime
 import pytz
@@ -142,7 +142,63 @@ class ProductionFinishForm(forms.Form):
     Batch_Output_Dalam_Roll = forms.CharField(required=True)
     Remarks = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'cols': 50}))
 
+class MachineUpdateStatusForm(forms.Form):
+    machine_choices = [
+        ('CoEx 2', 'CoEx 2'),
+        ('CoEx 3', 'CoEx 3'),
+        ('CoEx 4', 'CoEx 4'),
+        ('CoEx 5', 'CoEx 5'),
+        ('CoEx 6', 'CoEx 6'),
+    ]
+    status_choices = [
+        ('Running', 'Running'), #berjalan normal
+        ('in Maintenance', 'in Maintenance'), #sedang dalam perbaikan
+        ('Out of Service', 'Out of Service'), #berhenti karena masalah
+        ('Stopped', 'Stopped'), #berhenti tanpa masalah
+    ]
+    
+    Mesin = forms.ChoiceField(choices=machine_choices)
+    Status = forms.ChoiceField(choices=status_choices)
 
+class CoEx2Form(forms.ModelForm):
+    Status = forms.CharField()
+    Timestamp = forms.CharField()
+    
+    class Meta:
+        model = CoEx2
+        fields = ('Status', 'Timestamp')
+
+class CoEx3Form(forms.ModelForm):
+    Status = forms.CharField()
+    Timestamp = forms.CharField()
+    
+    class Meta:
+        model = CoEx3
+        fields = ('Status', 'Timestamp')
+    
+class CoEx4Form(forms.ModelForm):
+    Status = forms.CharField()
+    Timestamp = forms.CharField()
+    
+    class Meta:
+        model = CoEx4
+        fields = ('Status', 'Timestamp')
+
+class CoEx5Form(forms.ModelForm):
+    Status = forms.CharField()
+    Timestamp = forms.CharField()
+    
+    class Meta:
+        model = CoEx5
+        fields = ('Status', 'Timestamp')
+
+class CoEx6Form(forms.ModelForm):
+    Status = forms.CharField()
+    Timestamp = forms.CharField()
+    
+    class Meta:
+        model = CoEx6
+        fields = ('Status', 'Timestamp')
 # ---------------------------------------UNUSED------------------------------------------
     # to field name Nomor PO tpi isinya hrus beda
     # production = Production.objects.values('Nomor_PO').distinct()
