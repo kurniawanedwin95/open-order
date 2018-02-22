@@ -159,46 +159,52 @@ class MachineUpdateStatusForm(forms.Form):
     
     Mesin = forms.ChoiceField(choices=machine_choices)
     Status = forms.ChoiceField(choices=status_choices)
+    Remarks = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'cols': 50}))
 
 class CoEx2Form(forms.ModelForm):
     Status = forms.CharField()
     Timestamp = forms.CharField()
+    Remarks = forms.CharField()
     
     class Meta:
         model = CoEx2
-        fields = ('Status', 'Timestamp')
+        fields = ('Status', 'Timestamp', 'Remarks')
 
 class CoEx3Form(forms.ModelForm):
     Status = forms.CharField()
     Timestamp = forms.CharField()
+    Remarks = forms.CharField()
     
     class Meta:
         model = CoEx3
-        fields = ('Status', 'Timestamp')
+        fields = ('Status', 'Timestamp', 'Remarks')
     
 class CoEx4Form(forms.ModelForm):
     Status = forms.CharField()
     Timestamp = forms.CharField()
+    Remarks = forms.CharField()
     
     class Meta:
         model = CoEx4
-        fields = ('Status', 'Timestamp')
+        fields = ('Status', 'Timestamp', 'Remarks')
 
 class CoEx5Form(forms.ModelForm):
     Status = forms.CharField()
     Timestamp = forms.CharField()
+    Remarks = forms.CharField()
     
     class Meta:
         model = CoEx5
-        fields = ('Status', 'Timestamp')
+        fields = ('Status', 'Timestamp', 'Remarks')
 
 class CoEx6Form(forms.ModelForm):
     Status = forms.CharField()
     Timestamp = forms.CharField()
+    Remarks = forms.CharField()
     
     class Meta:
         model = CoEx6
-        fields = ('Status', 'Timestamp')
+        fields = ('Status', 'Timestamp', 'Remarks')
 # ---------------------------------------UNUSED------------------------------------------
     # to field name Nomor PO tpi isinya hrus beda
     # production = Production.objects.values('Nomor_PO').distinct()

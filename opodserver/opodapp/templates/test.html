@@ -111,14 +111,7 @@
             {% for item in order %}
             <tr>
               <td>{{ item.Nomor_PO }}</td>
-              {% if item.Product_Name == "QUASAREX 01" %}
-                <td style="background-color: #337ab7"> <!-- primary -->
-                {% else %}
-                <td style="background-color: #f0ad4e"> <!-- warning -->
-                <!--#d9534f danger-->
-                <!-- #5cb85c success-->
-              {% endif %}
-              {{ item.Product_Name }}</td>
+              <td>{{ item.Product_Name }}</td>
               <td>{{ item.Item_desc }}</td>
               <td>{{ item.U_of_m }}</td>
               <td>{{ item.Qty }}</td>
@@ -139,8 +132,39 @@
       </div>
 
       <div align="center">
+        <div class="running">
+          <p><b>Running</b></p>
+        </div>
+        <div class="in_maintenance">
+          <p><b>In Maintenance</b></p>
+        </div>
         <h3>List Produksi CoEx Berjalan</h3>
+        <div class="out_of_service">
+          <p><b>Out of Service</b></p>
+        </div>
+        <div class="stopped">
+          <p><b>Stopped</b></p>
+        </div>
       </div>
+
+      <div align="center">
+        <div class="running">
+          <h3><b>CoEx2</b></h3>
+        </div>
+        <div class="in_maintenance">
+          <h3><b>CoEx3</b></h3>
+        </div>
+        <div style="align: center; display: inline-block; background: #789789; width: 15%">
+           <h3><b>CoEx4</b></h3>
+        </div>
+        <div class="out_of_service">
+          <h3><b>CoEx5</b></h3>
+        </div>
+        <div class="stopped">
+          <h3><b>CoEx6</b></h3>
+        </div>
+      </div>
+
       <div class="container col-sm-12 col-md-12 portrait_scroll_production" id="contain_production_portrait">
         <table class="table table-bordered table-striped" id="table_scroll_production_portrait">
           <thead class="thead-dark">

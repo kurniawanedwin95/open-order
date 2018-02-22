@@ -291,11 +291,11 @@ class MachineUpdateStatusView(TemplateView):
     
     def get(self, request):
         form = MachineUpdateStatusForm()
-        coex2 = list(CoEx2.objects.all())
-        coex3 = list(CoEx3.objects.all())
-        coex4 = list(CoEx4.objects.all())
-        coex5 = list(CoEx5.objects.all())
-        coex6 = list(CoEx6.objects.all())
+        coex2 = list(CoEx2.objects.order_by('-Timestamp'))
+        coex3 = list(CoEx3.objects.order_by('-Timestamp'))
+        coex4 = list(CoEx4.objects.order_by('-Timestamp'))
+        coex5 = list(CoEx5.objects.order_by('-Timestamp'))
+        coex6 = list(CoEx6.objects.order_by('-Timestamp'))
         return render(request, self.template_name, {'form': form, 'coex2': coex2, 'coex3': coex3, 'coex4': coex4, 'coex5': coex5, 'coex6': coex6})
     
     def post(self, request):
@@ -303,10 +303,12 @@ class MachineUpdateStatusView(TemplateView):
         if form.is_valid():
             mesin = form.cleaned_data['Mesin']
             status = form.cleaned_data['Status']
+            remarks = form.cleaned_data['Remarks']
             if mesin == "CoEx 2":
                 # update CoEx2
                 data = {
                     'Status': status,
+                    'Remarks': remarks,
                     'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
                 }
                 model = CoEx2Form(data)
@@ -315,6 +317,7 @@ class MachineUpdateStatusView(TemplateView):
                 # update CoEx3
                 data = {
                     'Status': status,
+                    'Remarks': remarks,
                     'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
                 }
                 model = CoEx3Form(data)
@@ -323,6 +326,7 @@ class MachineUpdateStatusView(TemplateView):
                 # update CoEx4
                 data = {
                     'Status': status,
+                    'Remarks': remarks,
                     'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
                 }
                 model = CoEx4Form(data)
@@ -331,6 +335,7 @@ class MachineUpdateStatusView(TemplateView):
                 # update CoEx5
                 data = {
                     'Status': status,
+                    'Remarks': remarks,
                     'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
                 }
                 model = CoEx5Form(data)
@@ -339,6 +344,7 @@ class MachineUpdateStatusView(TemplateView):
                 # update CoEx6
                 data = {
                     'Status': status,
+                    'Remarks': remarks,
                     'Timestamp': unicode(datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%m/%d/%Y %H:%M:%S')),
                 }
                 model = CoEx6Form(data)
@@ -346,11 +352,11 @@ class MachineUpdateStatusView(TemplateView):
             else:
                 print "you got bamboozled"
             form = MachineUpdateStatusForm()
-            coex2 = list(CoEx2.objects.all())
-            coex3 = list(CoEx3.objects.all())
-            coex4 = list(CoEx4.objects.all())
-            coex5 = list(CoEx5.objects.all())
-            coex6 = list(CoEx6.objects.all())
+            coex2 = list(CoEx2.objects.order_by('-Timestamp'))
+            coex3 = list(CoEx3.objects.order_by('-Timestamp'))
+            coex4 = list(CoEx4.objects.order_by('-Timestamp'))
+            coex5 = list(CoEx5.objects.order_by('-Timestamp'))
+            coex6 = list(CoEx6.objects.order_by('-Timestamp'))
             return render(request, self.template_name, {'form': form, 'coex2': coex2, 'coex3': coex3, 'coex4': coex4, 'coex5': coex5, 'coex6': coex6})
         else:
             print "Form is invalid."

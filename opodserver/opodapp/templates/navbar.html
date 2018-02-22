@@ -174,9 +174,38 @@
         padding: 10px;
       }
       
-      #table_machine_status {
-        overflow: scroll;
-        height: 250px;
+      #machine_status_top {
+        height: 170px;
+        overflow-y: scroll;
+      }
+      #machine_status_bot {
+        height: 230px;
+        overflow-y: scroll;
+      }
+      
+      .running {
+        background: #5cb85c;
+        float: left;
+        margin-left: 2%;
+        width: 15%;
+      }
+      .in_maintenance {
+        background: #5bc0de;
+        float: left;
+        margin-left: 2%;
+        width: 15%;
+      }
+      .out_of_service {
+        background: #d9534f;
+        float: right;
+        margin-right: 2%;
+        width: 15%;
+      }
+      .stopped {
+        background: #f0ad4e;
+        float: right;
+        margin-right: 2%;
+        width: 15%;
       }
 
       /*#notif {*/

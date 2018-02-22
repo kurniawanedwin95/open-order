@@ -61,20 +61,25 @@ class ProductList(models.Model):
 
 class CoEx2(models.Model):
     Status = models.CharField(max_length = 30)
+    Remarks = models.CharField(max_length = 300)
     Timestamp = models.CharField(max_length = 100)
     
 class CoEx3(models.Model):
     Status = models.CharField(max_length = 30)
+    Remarks = models.CharField(max_length = 300)
     Timestamp = models.CharField(max_length = 100)
 
 class CoEx4(models.Model):
     Status = models.CharField(max_length = 30)
+    Remarks = models.CharField(max_length = 300)
     Timestamp = models.CharField(max_length = 100)
 
 class CoEx5(models.Model):
     Status = models.CharField(max_length = 30)
+    Remarks = models.CharField(max_length = 300)
     Timestamp = models.CharField(max_length = 100)
 
 class CoEx6(models.Model):
     Status = models.CharField(max_length = 30)
+    Remarks = models.CharField(max_length = 300)
     Timestamp = models.CharField(max_length = 100)
